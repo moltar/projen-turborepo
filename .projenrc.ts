@@ -26,7 +26,7 @@ const project = new cdk.JsiiProject({
   projenrcTs: true,
   packageManager: javascript.NodePackageManager.NPM,
   deps: [
-    'turborepo',
+    'turbo',
   ],
   peerDeps: [
     'projen',

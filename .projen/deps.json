@@ -93,7 +93,7 @@
       "type": "peer"
     },
     {
-      "name": "turborepo",
+      "name": "turbo",
       "type": "runtime"
     }
   ],
