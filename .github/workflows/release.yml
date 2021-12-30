@@ -80,6 +80,14 @@ jobs:
         with:
           name: build-artifact
           path: dist
+      - name: Prepare Repository
+        run: mv dist .repo
+      - name: Install Dependencies
+        run: cd .repo && npm ci
+      - name: Create js artifact
+        run: cd .repo && npx projen package:js
+      - name: Collect js Artifact
+        run: mv .repo/dist dist
       - name: Release
         run: npx -p jsii-release@latest jsii-release-npm
         env:

@@ -1,8 +1,10 @@
-import { typescript, javascript } from 'projen'
+import { javascript, cdk } from 'projen'
 
 const authorName = 'Roman Filippov'
+const authorAddress = 'rf@romanfilippov.com'
+const repository = 'https://github.com/moltar/projen-turborepo'
 
-const project = new typescript.TypeScriptProject({
+const project = new cdk.JsiiProject({
   defaultReleaseBranch: 'master',
   name: 'projen-turborepo',
   description: 'Projen project type for Turborepo monorepo setup.',
@@ -14,10 +16,13 @@ const project = new typescript.TypeScriptProject({
     'typescript',
   ],
   license: 'MIT',
+  repositoryUrl: repository,
+  repository: repository,
   authorName,
+  author: authorName,
   copyrightOwner: authorName,
-  authorEmail: 'rf@romanfilippov.com',
-  repository: 'https://github.com/moltar/projen-turborepo',
+  authorAddress: authorAddress,
+  authorEmail: authorAddress,
   projenrcTs: true,
   packageManager: javascript.NodePackageManager.NPM,
   deps: [
