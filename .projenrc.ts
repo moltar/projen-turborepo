@@ -26,6 +26,7 @@ const project = new typescript.TypeScriptProject({
   peerDeps: [
     'projen',
   ],
+  releaseToNpm: true,
 })
 
 project.eslint?.addRules({
