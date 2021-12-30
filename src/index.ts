@@ -167,7 +167,7 @@ export class TurborepoProject extends javascript.NodeProject {
     const { subProjects } = this
 
     if (subProjects.length > 0) {
-      const workspaces = subProjects.map((subProject) => path.relative(this.outdir, subProject.outdir))
+      const workspaces = subProjects.map(({ outdir }) => path.relative(this.outdir, outdir))
       this.package.addField('workspaces', workspaces)
     }
   }
