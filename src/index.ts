@@ -159,6 +159,7 @@ export class TurborepoProject extends javascript.NodeProject {
   }
 
   private get subProjects(): Project[] {
+    // https://github.com/projen/projen/issues/1433
     // @ts-ignore
     return this.subprojects
   }
