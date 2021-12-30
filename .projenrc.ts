@@ -34,6 +34,9 @@ const project = new cdk.JsiiProject({
   peerDeps: [
     'projen',
   ],
+  devDeps: [
+    'projen',
+  ],
   releaseToNpm: true,
 })
 
