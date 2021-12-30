@@ -89,6 +89,10 @@
       "type": "build"
     },
     {
+      "name": "turbo",
+      "type": "bundled"
+    },
+    {
       "name": "projen",
       "type": "peer"
     },

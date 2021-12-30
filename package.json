@@ -62,7 +62,9 @@
   "dependencies": {
     "turbo": "^1.0.23"
   },
-  "bundledDependencies": [],
+  "bundledDependencies": [
+    "turbo"
+  ],
   "keywords": [
     "monorepo",
     "projen",

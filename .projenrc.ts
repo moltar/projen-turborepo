@@ -28,6 +28,9 @@ const project = new cdk.JsiiProject({
   deps: [
     'turbo',
   ],
+  bundledDeps: [
+    'turbo',
+  ],
   peerDeps: [
     'projen',
   ],
