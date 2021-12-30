@@ -25,6 +25,11 @@
     "watch": "npx projen watch",
     "projen": "npx projen"
   },
+  "author": {
+    "name": "Roman Filippov",
+    "email": "rf@romanfilippov.com",
+    "organization": false
+  },
   "devDependencies": {
     "@types/jest": "*",
     "@types/node": "^12",

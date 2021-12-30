@@ -1,5 +1,7 @@
 import { typescript, javascript } from 'projen'
 
+const authorName = 'Roman Filippov'
+
 const project = new typescript.TypeScriptProject({
   defaultReleaseBranch: 'master',
   name: 'projen-turborepo',
@@ -12,7 +14,9 @@ const project = new typescript.TypeScriptProject({
     'typescript',
   ],
   license: 'MIT',
-  copyrightOwner: 'Roman Filippov',
+  authorName,
+  copyrightOwner: authorName,
+  authorEmail: 'rf@romanfilippov.com',
   repository: 'https://github.com/moltar/projen-turborepo',
   projenrcTs: true,
   packageManager: javascript.NodePackageManager.NPM,
