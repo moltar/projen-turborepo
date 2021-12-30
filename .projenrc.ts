@@ -13,6 +13,7 @@ const project = new typescript.TypeScriptProject({
   ],
   license: 'MIT',
   copyrightOwner: 'Roman Filippov',
+  repository: 'https://github.com/moltar/projen-turborepo',
   projenrcTs: true,
   packageManager: javascript.NodePackageManager.NPM,
   deps: [

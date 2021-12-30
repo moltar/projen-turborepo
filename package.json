@@ -1,6 +1,10 @@
 {
   "name": "projen-turborepo",
   "description": "Projen project type for Turborepo monorepo setup.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moltar/projen-turborepo"
+  },
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
