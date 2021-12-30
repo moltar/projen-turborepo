@@ -39,7 +39,7 @@ interface TurborepoPipelineConfig {
   cache?: boolean;
 }
 
-interface TurborepoConfig {
+export interface TurborepoConfig {
   /**
    * The base branch or your git repository.
    * Git is used by turbo in its hashing algorithm and `--since` CLI flag.
