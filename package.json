@@ -1,5 +1,6 @@
 {
   "name": "projen-turborepo",
+  "description": "Projen project type for Turborepo monorepo setup.",
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
