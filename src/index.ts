@@ -1,5 +1,5 @@
-import path from 'path';
-import { javascript, Project } from 'projen';
+import path from 'path'
+import { javascript, Project } from 'projen'
 
 interface TurborepoPipelineConfig {
   /**
@@ -110,21 +110,21 @@ export class TurborepoProject extends javascript.NodeProject {
     super({
       ...options,
       jest: false,
-    });
+    })
 
     if (options.projenrcTs) {
-      this.addDevDeps('ts-node', 'typescript');
+      this.addDevDeps('ts-node', 'typescript')
     };
 
     /**
      * Add turborepo as a dependency so we have the CLI.
     */
-    this.addDevDeps('turborepo');
+    this.addDevDeps('turborepo')
 
     /**
      * Turborepo cache directory.
     */
-    this.gitignore.addPatterns('.turbo');
+    this.gitignore.addPatterns('.turbo')
 
     /**
      * Finally, turborepo config.
@@ -139,36 +139,36 @@ export class TurborepoProject extends javascript.NodeProject {
       // TODO: Cannot get the value set in the projenrc file.
       // @see https://github.com/projen/projen/issues/1427
       baseBranch: options.turbo.baseBranch || 'origin/master',
-    };
-    this.package.addField('turbo', turbo);
+    }
+    this.package.addField('turbo', turbo)
 
     /**
      * Monorepo root package is always private!
     */
-    this.package.addField('private', true);
+    this.package.addField('private', true)
 
     this.addTask('turbo:run', {
       description: 'Run a task in every sub-project.',
       exec: 'turbo run',
-    });
+    })
 
     this.addTask('turbo:prune', {
       description: 'Prepare a subset of your monorepo.',
       exec: 'turbo prune',
-    });
+    })
   }
 
   private get subProjects(): Project[] {
     // @ts-ignore
-    return this.subprojects;
+    return this.subprojects
   }
 
   preSynthesize() {
-    const { subProjects } = this;
+    const { subProjects } = this
 
     if (subProjects.length > 0) {
-      const workspaces = subProjects.map((subProject) => path.relative(this.outdir, subProject.outdir));
-      this.package.addField('workspaces', workspaces);
+      const workspaces = subProjects.map((subProject) => path.relative(this.outdir, subProject.outdir))
+      this.package.addField('workspaces', workspaces)
     }
   }
 }

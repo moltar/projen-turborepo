@@ -122,7 +122,7 @@
     ],
     "semi": [
       "error",
-      "always"
+      "never"
     ],
     "max-len": [
       "error",
