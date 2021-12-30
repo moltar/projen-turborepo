@@ -139,6 +139,24 @@ export class TurborepoProject extends javascript.NodeProject {
       // TODO: Cannot get the value set in the projenrc file.
       // @see https://github.com/projen/projen/issues/1427
       baseBranch: options.turbo.baseBranch || 'origin/master',
+
+      pipeline: {
+        build: {
+          dependsOn: ['^build'],
+          outputs: ['dist/**', 'lib/**'],
+        },
+        test: {
+          dependsOn: ['^build'],
+          outputs: ['coverage/**', 'test-reports/**'],
+        },
+        eslint: {
+          outputs: [],
+        },
+        watch: {
+          cache: false,
+        },
+        ...options.turbo.pipeline,
+      },
     }
     this.package.addField('turbo', turbo)
 

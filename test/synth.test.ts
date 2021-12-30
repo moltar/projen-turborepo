@@ -46,17 +46,6 @@ describe('TurborepoProject', () => {
     const turbo = {
       baseBranch: 'origin/main',
       pipeline: {
-        build: {
-          dependsOn: ['^build'],
-          outputs: ['.next/**'],
-        },
-        test: {
-          dependsOn: ['^build'],
-          outputs: [],
-        },
-        lint: {
-          outputs: [],
-        },
         dev: {
           cache: false,
         },
@@ -66,7 +55,26 @@ describe('TurborepoProject', () => {
     const project = createProject({ turbo })
     const synth = synthProjectSnapshot(project)
 
-    expect(synth['package.json'].turbo).toStrictEqual(turbo)
+    expect(synth['package.json'].turbo).toStrictEqual({
+      ...turbo,
+      pipeline: {
+        ...turbo.pipeline,
+        build: {
+          dependsOn: ['^build'],
+          outputs: ['dist/**', 'lib/**'],
+        },
+        test: {
+          dependsOn: ['^build'],
+          outputs: ['coverage/**', 'test-reports/**'],
+        },
+        eslint: {
+          outputs: [],
+        },
+        watch: {
+          cache: false,
+        },
+      },
+    })
   })
 
   it('should set the npmClient in turbo config', () => {
