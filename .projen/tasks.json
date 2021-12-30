@@ -214,7 +214,7 @@
           "exec": "npm install"
         },
         {
-          "exec": "npm update @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit json-schema npm-check-updates standard-version ts-jest ts-node typescript"
+          "exec": "npm update @types/jest @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit json-schema npm-check-updates standard-version ts-jest ts-node typescript turborepo"
         },
         {
           "exec": "npx projen"
@@ -247,7 +247,7 @@
           "exec": "npm install"
         },
         {
-          "exec": "npm update projen"
+          "exec": "npm update projen projen"
         },
         {
           "exec": "npx projen"
