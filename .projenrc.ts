@@ -2,7 +2,7 @@ import { typescript } from 'projen';
 import { NodePackageManager } from 'projen/lib/javascript';
 
 const project = new typescript.TypeScriptProject({
-  defaultReleaseBranch: 'main',
+  defaultReleaseBranch: 'master',
   name: 'projen-turborepo',
   projenrcTs: true,
   packageManager: NodePackageManager.NPM,
