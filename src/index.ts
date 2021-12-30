@@ -1,7 +1,7 @@
 import * as path from 'path'
 import { javascript, Project } from 'projen'
 
-interface TurborepoPipelineConfig {
+export interface TurborepoPipelineConfig {
   /**
    * The list of tasks that this task depends on.
    *
@@ -13,7 +13,7 @@ interface TurborepoPipelineConfig {
    * Items in `dependsOn` without `^` prefix, express the relationships between tasks at the package
    * level (e.g. "a package's `test` and `lint` commands depend on `build` being completed first").
    */
-  dependsOn?: string[];
+  readonly dependsOn?: string[];
 
   /**
    * Defaults to `["dist/**", "build/**"]`. The set of glob patterns of a task's cacheable
@@ -26,7 +26,7 @@ interface TurborepoPipelineConfig {
    * doesn't emit any filesystem artifacts (e.g. like a linter), but you still want to cache its
    * logs (and treat them like an artifact).
    */
-  outputs?: string[];
+  readonly outputs?: string[];
 
   /**
    * Whether or not to cache the task `outputs`.
@@ -36,7 +36,7 @@ interface TurborepoPipelineConfig {
    *
    * @default true
    */
-  cache?: boolean;
+  readonly cache?: boolean;
 }
 
 export interface TurborepoConfig {
@@ -48,7 +48,7 @@ export interface TurborepoConfig {
    *
    * @see https://turborepo.org/docs/reference/configuration#basebranch
    */
-  baseBranch: string;
+  readonly baseBranch: string;
 
   /**
    * A list of globs for implicit global hash dependencies. The contents of these files will be
@@ -59,7 +59,7 @@ export interface TurborepoConfig {
    *
    * @see https://turborepo.org/docs/reference/configuration#globaldependencies
    */
-  globalDependencies?: string[];
+  readonly globalDependencies?: string[];
 
 
   /**
@@ -73,7 +73,7 @@ export interface TurborepoConfig {
    *
    * @see https://turborepo.org/docs/reference/configuration#pipeline
    */
-  pipeline: Record<string, TurborepoPipelineConfig>;
+  readonly pipeline: Record<string, TurborepoPipelineConfig>;
 }
 
 interface TurborepoConfigInternal extends TurborepoConfig{
@@ -84,7 +84,7 @@ interface TurborepoConfigInternal extends TurborepoConfig{
  *
  * @see https://turborepo.org/docs/reference/configuration#npmclient
  */
-  npmClient?: string;
+  readonly npmClient?: string;
 }
 
 export interface TurborepoProjectOptions extends javascript.NodeProjectOptions {
