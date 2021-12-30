@@ -47,6 +47,13 @@
     "turborepo": "^0.0.1"
   },
   "bundledDependencies": [],
+  "keywords": [
+    "monorepo",
+    "projen",
+    "turbo",
+    "turborepo",
+    "typescript"
+  ],
   "main": "lib/index.js",
   "license": "MIT",
   "version": "0.0.0",
