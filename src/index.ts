@@ -176,7 +176,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     const { subProjects } = this
 
     if (subProjects?.length > 0) {
-      const workspaces = subProjects.map(({ outdir }) => path.relative(this.outdir, outdir))
+      const workspaces = subProjects.map(({ outdir }) => path.relative(this.outdir, outdir)).sort()
       this.package.addField('workspaces', workspaces)
     }
   }
