@@ -18,8 +18,8 @@ const turborepoConfig: TurborepoConfig = { ... }
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | [`baseBranch`](#projenturborepoturborepoconfigpropertybasebranch)<span title="Required">*</span> | `string` | The base branch or your git repository. |
-| [`pipeline`](#projenturborepoturborepoconfigpropertypipeline)<span title="Required">*</span> | {[ key: string ]: [`projen-turborepo.TurborepoPipelineConfig`](#projen-turborepo.TurborepoPipelineConfig)} | An object representing the task dependency graph of your project. |
 | [`globalDependencies`](#projenturborepoturborepoconfigpropertyglobaldependencies) | `string`[] | A list of globs for implicit global hash dependencies. |
+| [`pipeline`](#projenturborepoturborepoconfigpropertypipeline) | {[ key: string ]: [`projen-turborepo.TurborepoPipelineConfig`](#projen-turborepo.TurborepoPipelineConfig)} | An object representing the task dependency graph of your project. |
 
 ---
 
@@ -30,29 +30,13 @@ public readonly baseBranch: string;
 ```
 
 - *Type:* `string`
-- *Default:* origin/master
+- *Default:* 'origin/master'
 
 The base branch or your git repository.
 
 Git is used by turbo in its hashing algorithm and `--since` CLI flag.
 
 > https://turborepo.org/docs/reference/configuration#basebranch
-
----
-
-##### `pipeline`<sup>Required</sup> <a name="projen-turborepo.TurborepoConfig.property.pipeline" id="projenturborepoturborepoconfigpropertypipeline"></a>
-
-```typescript
-public readonly pipeline: {[ key: string ]: TurborepoPipelineConfig};
-```
-
-- *Type:* {[ key: string ]: [`projen-turborepo.TurborepoPipelineConfig`](#projen-turborepo.TurborepoPipelineConfig)}
-
-An object representing the task dependency graph of your project.
-
-`turbo` interprets these conventions to properly schedule, execute, and cache the outputs of tasks in your project  Each key in the `pipeline` object is the name of a task that can be executed by `turbo run`. If `turbo` finds a workspace package with a `package.json` `scripts` object with a matching key, it will apply the pipeline task configuration to that NPM script during execution. This allows you to use `pipeline` to set conventions across your entire Turborepo.
-
-> https://turborepo.org/docs/reference/configuration#pipeline
 
 ---
 
@@ -69,6 +53,22 @@ A list of globs for implicit global hash dependencies.
 The contents of these files will be included in the global hashing algorithm. This is useful for busting the cache based on `.env` files (not in Git) or any root level file that impacts package tasks (but are not represented in the traditional dependency graph (e.g. a root `tsconfig.json`, `jest.config.js`, `.eslintrc` , etc.)).
 
 > https://turborepo.org/docs/reference/configuration#globaldependencies
+
+---
+
+##### `pipeline`<sup>Optional</sup> <a name="projen-turborepo.TurborepoConfig.property.pipeline" id="projenturborepoturborepoconfigpropertypipeline"></a>
+
+```typescript
+public readonly pipeline: {[ key: string ]: TurborepoPipelineConfig};
+```
+
+- *Type:* {[ key: string ]: [`projen-turborepo.TurborepoPipelineConfig`](#projen-turborepo.TurborepoPipelineConfig)}
+
+An object representing the task dependency graph of your project.
+
+`turbo` interprets these conventions to properly schedule, execute, and cache the outputs of tasks in your project  Each key in the `pipeline` object is the name of a task that can be executed by `turbo run`. If `turbo` finds a workspace package with a `package.json` `scripts` object with a matching key, it will apply the pipeline task configuration to that NPM script during execution. This allows you to use `pipeline` to set conventions across your entire Turborepo.
+
+> https://turborepo.org/docs/reference/configuration#pipeline
 
 ---
 
@@ -262,8 +262,8 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`workflowBootstrapSteps`](#projenturborepoturborepoprojectoptionspropertyworkflowbootstrapsteps) | `any`[] | Workflow steps to use in order to bootstrap this repo. |
 | [`workflowGitIdentity`](#projenturborepoturborepoprojectoptionspropertyworkflowgitidentity) | [`projen.github.GitIdentity`](#projen.github.GitIdentity) | The git identity to use in workflows. |
 | [`workflowNodeVersion`](#projenturborepoturborepoprojectoptionspropertyworkflownodeversion) | `string` | The node version to use in GitHub workflows. |
-| [`turbo`](#projenturborepoturborepoprojectoptionspropertyturbo)<span title="Required">*</span> | [`projen-turborepo.TurborepoConfig`](#projen-turborepo.TurborepoConfig) | Turborepo config options. |
 | [`projenrcTs`](#projenturborepoturborepoprojectoptionspropertyprojenrcts) | `boolean` | (experimental) Use TypeScript for your projenrc file (`.projenrc.ts`). |
+| [`turbo`](#projenturborepoturborepoprojectoptionspropertyturbo) | [`projen-turborepo.TurborepoConfig`](#projen-turborepo.TurborepoConfig) | Turborepo config options. |
 
 ---
 
@@ -1805,18 +1805,6 @@ The node version to use in GitHub workflows.
 
 ---
 
-##### `turbo`<sup>Required</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.turbo" id="projenturborepoturborepoprojectoptionspropertyturbo"></a>
-
-```typescript
-public readonly turbo: TurborepoConfig;
-```
-
-- *Type:* [`projen-turborepo.TurborepoConfig`](#projen-turborepo.TurborepoConfig)
-
-Turborepo config options.
-
----
-
 ##### `projenrcTs`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.projenrcTs" id="projenturborepoturborepoprojectoptionspropertyprojenrcts"></a>
 
 ```typescript
@@ -1827,6 +1815,19 @@ public readonly projenrcTs: boolean;
 - *Default:* false
 
 (experimental) Use TypeScript for your projenrc file (`.projenrc.ts`).
+
+---
+
+##### `turbo`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.turbo" id="projenturborepoturborepoprojectoptionspropertyturbo"></a>
+
+```typescript
+public readonly turbo: TurborepoConfig;
+```
+
+- *Type:* [`projen-turborepo.TurborepoConfig`](#projen-turborepo.TurborepoConfig)
+- *Default:* {}
+
+Turborepo config options.
 
 ---
 
