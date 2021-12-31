@@ -1,7 +1,6 @@
 import { tmpdir } from 'os'
 import path from 'path'
-import { typescript, javascript, Project } from 'projen'
-import { synthSnapshot } from 'projen/lib/util/synth'
+import { typescript, javascript, Project, Testing } from 'projen'
 import { TurborepoProject, TurborepoProjectOptions } from '../src'
 
 const createProjectName = (name?: string) => [name, Math.random().toString().replace('.', '')].join('-')
@@ -35,5 +34,5 @@ export function createSubProject(options: Partial<typescript.TypeScriptProjectOp
 }
 
 export function synthProjectSnapshot(project: Project) {
-  return synthSnapshot(project)
+  return Testing.synth(project)
 }
