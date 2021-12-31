@@ -106,10 +106,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       jest: false,
     })
 
-    if (options.projenrcTs) {
-      this.addDevDeps('ts-node', 'typescript')
-    };
-
     /**
      * Add turborepo as a dependency so we have the CLI.
     */
