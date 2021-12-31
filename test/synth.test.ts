@@ -18,7 +18,7 @@ describe('TurborepoProject', () => {
     const project = createProject()
     const synth = synthProjectSnapshot(project)
 
-    expect(synth['package.json'].devDependencies.turborepo).toBe('*')
+    expect(synth['package.json'].devDependencies).toHaveProperty('turbo')
   })
 
   it('should set root package as private', () => {

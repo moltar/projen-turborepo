@@ -119,7 +119,7 @@ export class TurborepoProject extends javascript.NodeProject {
     /**
      * Add turborepo as a dependency so we have the CLI.
     */
-    this.addDevDeps('turborepo')
+    this.addDevDeps('turbo')
 
     /**
      * Turborepo cache directory.
