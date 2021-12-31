@@ -25,12 +25,6 @@ const project = new cdk.JsiiProject({
   authorEmail: authorAddress,
   projenrcTs: true,
   packageManager: javascript.NodePackageManager.NPM,
-  deps: [
-    'turbo',
-  ],
-  bundledDeps: [
-    'turbo',
-  ],
   peerDeps: [
     'projen',
   ],
