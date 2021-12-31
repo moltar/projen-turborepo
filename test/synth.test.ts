@@ -87,4 +87,13 @@ describe('TurborepoProject', () => {
 
     expect(synth['package.json'].turbo.npmClient).toBe('npm')
   })
+
+  it('should set turborepo baseBranch', () => {
+    expect.assertions(1)
+
+    const project = createProject()
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['package.json'].turbo.baseBranch).toBe('origin/master')
+  })
 })

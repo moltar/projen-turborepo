@@ -11,9 +11,8 @@ export function createProject(options: Partial<TurborepoProjectOptions> = {}) {
   return new TurborepoProject({
     name,
     outdir: path.join(tmpdir(), name),
-    defaultReleaseBranch: 'origin/master',
+    defaultReleaseBranch: 'master',
     turbo: {
-      baseBranch: 'origin/master',
       pipeline: {},
     },
     ...options,

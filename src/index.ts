@@ -41,16 +41,6 @@ export interface TurborepoPipelineConfig {
 
 export interface TurborepoConfig {
   /**
-   * The base branch or your git repository.
-   * Git is used by turbo in its hashing algorithm and `--since` CLI flag.
-   *
-   * @default 'origin/master'
-   *
-   * @see https://turborepo.org/docs/reference/configuration#basebranch
-   */
-  readonly baseBranch: string;
-
-  /**
    * A list of globs for implicit global hash dependencies. The contents of these files will be
    * included in the global hashing algorithm. This is useful for busting the cache based on `.env`
    * files (not in Git) or any root level file that impacts package tasks (but are not represented
@@ -77,6 +67,16 @@ export interface TurborepoConfig {
 }
 
 interface TurborepoConfigInternal extends TurborepoConfig{
+  /**
+   * The base branch or your git repository.
+   * Git is used by turbo in its hashing algorithm and `--since` CLI flag.
+   *
+   * @default 'origin/master'
+   *
+   * @see https://turborepo.org/docs/reference/configuration#basebranch
+   */
+  readonly baseBranch: string;
+
   /**
  * The NPM client in-use in your project.
  *
@@ -126,13 +126,13 @@ export class TurborepoProject extends typescript.TypeScriptProject {
      * @see https://turborepo.org/docs/reference/configuration
      */
     const turbo: TurborepoConfigInternal = {
-      ...options.turbo,
-
       npmClient: options.packageManager,
 
       // TODO: Cannot get the value set in the projenrc file.
       // @see https://github.com/projen/projen/issues/1427
-      baseBranch: options.turbo?.baseBranch || 'origin/master',
+      baseBranch: `origin/${options.defaultReleaseBranch || 'master'}`,
+
+      ...options.turbo,
 
       pipeline: {
         build: {
