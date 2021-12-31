@@ -23,7 +23,6 @@ import { typescript } from 'projen';
 const turbo = new TurborepoProject({
   name: 'my-monorepo',
   turbo: {
-    baseBranch: 'origin/master',
     pipeline: {
       // ... your pipeline config, but defaults are already included
     },
