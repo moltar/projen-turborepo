@@ -18,7 +18,7 @@ $> npx projen new --from projen-turborepo --projenrc-ts
 
 ```ts
 import { TurborepoProject } from 'projen-turborepo'
-import { TypeScriptProject } from 'projen'
+import { typescript } from 'projen';
 
 const turbo = new TurborepoProject({
   name: 'my-monorepo',
@@ -30,9 +30,11 @@ const turbo = new TurborepoProject({
   },
 })
 
-const firstProject = new TypeScriptProject({
-  name: 'my-first-project',
+new typescript.TypeScriptProject({
   parent: turbo,
+  defaultReleaseBranch: 'master',
+  name: 'my-first-project',
+  outdir: 'packages/my-first-project',
   // ...
 })
 
