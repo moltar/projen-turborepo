@@ -155,16 +155,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
      * Monorepo root package is always private!
     */
     this.package.addField('private', true)
-
-    this.addTask('turbo:run', {
-      description: 'Run a task in every sub-project.',
-      exec: 'turbo run',
-    })
-
-    this.addTask('turbo:prune', {
-      description: 'Prepare a subset of your monorepo.',
-      exec: 'turbo prune',
-    })
   }
 
   private get subProjects(): Project[] {
