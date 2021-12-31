@@ -1,5 +1,5 @@
 import * as path from 'path'
-import { javascript, Project } from 'projen'
+import { typescript, Project } from 'projen'
 
 export interface TurborepoPipelineConfig {
   /**
@@ -87,15 +87,7 @@ interface TurborepoConfigInternal extends TurborepoConfig{
   readonly npmClient?: string;
 }
 
-export interface TurborepoProjectOptions extends javascript.NodeProjectOptions {
-  /**
-   * (experimental) Use TypeScript for your projenrc file (`.projenrc.ts`).
-   *
-   * @default false
-   * @experimental
-   */
-  readonly projenrcTs?: boolean;
-
+export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOptions {
   /**
    * Turborepo config options.
    *
@@ -104,7 +96,7 @@ export interface TurborepoProjectOptions extends javascript.NodeProjectOptions {
   readonly turbo?: TurborepoConfig;
 }
 
-export class TurborepoProject extends javascript.NodeProject {
+export class TurborepoProject extends typescript.TypeScriptProject {
   // private subProjects: Record<string, Project>;
   // private projenrcTs: boolean;
 
