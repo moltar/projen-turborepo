@@ -96,4 +96,16 @@ describe('TurborepoProject', () => {
 
     expect(synth['package.json'].turbo.baseBranch).toBe('origin/master')
   })
+
+  it('should not include sample code', () => {
+    expect.assertions(2)
+
+    const project = createProject()
+    const synth = synthProjectSnapshot(project)
+
+    console.log(Object.keys(synth))
+
+    expect(synth['src/index.ts']).toBeUndefined()
+    expect(synth['test/hello.test.ts']).toBeUndefined()
+  })
 })

@@ -104,6 +104,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     super({
       ...options,
       jest: false,
+      sampleCode: false,
     })
 
     /**
