@@ -44,7 +44,7 @@ export interface TurborepoConfig {
    * The base branch or your git repository.
    * Git is used by turbo in its hashing algorithm and `--since` CLI flag.
    *
-   * @default origin/master
+   * @default 'origin/master'
    *
    * @see https://turborepo.org/docs/reference/configuration#basebranch
    */
@@ -73,7 +73,7 @@ export interface TurborepoConfig {
    *
    * @see https://turborepo.org/docs/reference/configuration#pipeline
    */
-  readonly pipeline: Record<string, TurborepoPipelineConfig>;
+  readonly pipeline?: Record<string, TurborepoPipelineConfig>;
 }
 
 interface TurborepoConfigInternal extends TurborepoConfig{
@@ -98,8 +98,10 @@ export interface TurborepoProjectOptions extends javascript.NodeProjectOptions {
 
   /**
    * Turborepo config options.
+   *
+   * @default {}
    */
-  readonly turbo: TurborepoConfig;
+  readonly turbo?: TurborepoConfig;
 }
 
 export class TurborepoProject extends javascript.NodeProject {
@@ -138,7 +140,7 @@ export class TurborepoProject extends javascript.NodeProject {
 
       // TODO: Cannot get the value set in the projenrc file.
       // @see https://github.com/projen/projen/issues/1427
-      baseBranch: options.turbo.baseBranch || 'origin/master',
+      baseBranch: options.turbo?.baseBranch || 'origin/master',
 
       pipeline: {
         build: {
@@ -155,7 +157,7 @@ export class TurborepoProject extends javascript.NodeProject {
         watch: {
           cache: false,
         },
-        ...options.turbo.pipeline,
+        ...options.turbo?.pipeline,
       },
     }
     this.package.addField('turbo', turbo)
