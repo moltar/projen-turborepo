@@ -51,7 +51,11 @@ describe('TurborepoProject', () => {
         ...turbo.pipeline,
         build: {
           dependsOn: ['^build'],
-          outputs: ['dist/**', 'lib/**'],
+          outputs: ['build/**', 'dist/**', 'lib/**'],
+        },
+        compile: {
+          dependsOn: ['^compile'],
+          outputs: ['build/**', 'dist/**', 'lib/**'],
         },
         test: {
           dependsOn: ['^build'],

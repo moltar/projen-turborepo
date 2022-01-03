@@ -130,6 +130,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
      *
      * @see https://turborepo.org/docs/reference/configuration
      */
+    const outputs = ['build', 'dist', 'lib'].sort().map((dir) => `${dir}/**`)
     const turbo: TurborepoConfigInternal = {
       npmClient: options.packageManager,
 
@@ -142,7 +143,11 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       pipeline: {
         build: {
           dependsOn: ['^build'],
-          outputs: ['dist/**', 'lib/**'],
+          outputs,
+        },
+        compile: {
+          dependsOn: ['^compile'],
+          outputs,
         },
         test: {
           dependsOn: ['^build'],
