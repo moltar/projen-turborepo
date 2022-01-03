@@ -30,16 +30,6 @@ describe('TurborepoProject', () => {
     expect(synth['package.json'].private).toBe(true)
   })
 
-  it('should add turbo tasks', () => {
-    expect.assertions(2)
-
-    const project = createProject()
-    const synth = synthProjectSnapshot(project)
-
-    expect(synth['package.json'].scripts).toHaveProperty('turbo:run')
-    expect(synth['package.json'].scripts).toHaveProperty('turbo:prune')
-  })
-
   it('should have turbo config in package.json', () => {
     expect.assertions(1)
 
