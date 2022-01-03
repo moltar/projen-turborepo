@@ -57,4 +57,20 @@ describe('TurborepoProject', () => {
     expect(synth['tsconfig.json'].compilerOptions.baseUrl).toBeUndefined()
     expect(synth['tsconfig.json'].compilerOptions.paths).toBeUndefined()
   })
+
+  it('should add VS Code settings for ESLint', () => {
+    expect.assertions(1)
+
+    const project = createProject()
+
+    const subProjectDir = 'packages/baz'
+    createSubProject({
+      parent: project,
+      outdir: subProjectDir,
+    })
+
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['.vscode/settings.json'].eslint).toBeDefined()
+  })
 })

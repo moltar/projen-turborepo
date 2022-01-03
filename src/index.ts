@@ -1,5 +1,5 @@
 import * as path from 'path'
-import { typescript, Project, javascript } from 'projen'
+import { typescript, Project, javascript, JsonFile } from 'projen'
 
 export interface TurborepoPipelineConfig {
   /**
@@ -188,6 +188,16 @@ export class TurborepoProject extends typescript.TypeScriptProject {
 
     if (workspaces.length > 0) {
       this.package.addField('workspaces', workspaces)
+
+      // Adds VS Code settings for ESLint to recognize sub-projects
+      // https://github.com/Microsoft/vscode-eslint#settings-options
+      new JsonFile(this, '.vscode/settings.json', {
+        obj: {
+          eslint: {
+            workingDirectories: workspaces.map((workspace) => `./${workspace}`),
+          },
+        },
+      })
     }
 
     if (this.pathMapping) {
