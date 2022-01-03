@@ -103,8 +103,6 @@ describe('TurborepoProject', () => {
     const project = createProject()
     const synth = synthProjectSnapshot(project)
 
-    console.log(Object.keys(synth))
-
     expect(synth['src/index.ts']).toBeUndefined()
     expect(synth['test/hello.test.ts']).toBeUndefined()
   })
