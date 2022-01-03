@@ -26,10 +26,10 @@ const project = new cdk.JsiiProject({
   projenrcTs: true,
   packageManager: javascript.NodePackageManager.NPM,
   peerDeps: [
-    'projen',
+    'projen@0.50.2',
   ],
   devDeps: [
-    'projen',
+    'projen@0.50.2',
   ],
   releaseToNpm: true,
 })
