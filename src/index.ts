@@ -1,5 +1,5 @@
 import * as path from 'path'
-import { typescript, Project } from 'projen'
+import { typescript, Project, javascript } from 'projen'
 
 export interface TurborepoPipelineConfig {
   /**
@@ -94,11 +94,17 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
    * @default {}
    */
   readonly turbo?: TurborepoConfig;
+
+  /**
+   * Add TypeScript path maps in the root project for sub-projects.
+   *
+   * @default false
+   */
+  readonly pathMapping?: boolean;
 }
 
 export class TurborepoProject extends typescript.TypeScriptProject {
-  // private subProjects: Record<string, Project>;
-  // private projenrcTs: boolean;
+  private readonly pathMapping: boolean
 
   constructor(options: TurborepoProjectOptions) {
     super({
@@ -106,6 +112,8 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       jest: false,
       sampleCode: false,
     })
+
+    this.pathMapping = options.pathMapping ?? false
 
     /**
      * Add turborepo as a dependency so we have the CLI.
@@ -166,9 +174,34 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   preSynthesize() {
     const { subProjects } = this
 
-    if (subProjects?.length > 0) {
-      const workspaces = subProjects.map(({ outdir }) => path.relative(this.outdir, outdir)).sort()
+    const workspaces: string[] = []
+    const paths: Record<string, string[]> = {}
+
+    for (const subProject of subProjects?.sort((a, b) => a.name.localeCompare(b.name) )) {
+      const workspace = path.relative(this.outdir, subProject.outdir)
+      workspaces.push(workspace)
+
+      if (subProject instanceof javascript.NodeProject) {
+        paths[subProject.package.packageName] = [`${workspace}/src`]
+      }
+    }
+
+    if (workspaces.length > 0) {
       this.package.addField('workspaces', workspaces)
+    }
+
+    if (this.pathMapping) {
+      for (const tsconfig of [this.tsconfig, this.tsconfigDev]) {
+        if (tsconfig) {
+          Object.assign(tsconfig.compilerOptions, {
+            baseUrl: '.',
+            paths: {
+              ...tsconfig.compilerOptions.paths,
+              ...paths,
+            },
+          })
+        }
+      }
     }
   }
 }
