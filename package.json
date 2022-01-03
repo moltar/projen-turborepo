@@ -84,12 +84,10 @@
     ],
     "coverageDirectory": "coverage",
     "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "<rootDir>/dist/*"
+      "/node_modules/"
     ],
     "testPathIgnorePatterns": [
-      "/node_modules/",
-      "<rootDir>/dist/*"
+      "/node_modules/"
     ],
     "watchPathIgnorePatterns": [
       "/node_modules/"

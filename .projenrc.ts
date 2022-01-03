@@ -34,10 +34,6 @@ const project = new cdk.JsiiProject({
   releaseToNpm: true,
 })
 
-// Ignore files from `dist/*`
-// See: https://github.com/projen/projen/issues/1441
-project.jest?.addIgnorePattern('<rootDir>/dist/*')
-
 project.eslint?.addRules({
   semi: [
     'error',

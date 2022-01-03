@@ -17,26 +17,8 @@ const turborepoConfig: TurborepoConfig = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| [`baseBranch`](#projenturborepoturborepoconfigpropertybasebranch)<span title="Required">*</span> | `string` | The base branch or your git repository. |
 | [`globalDependencies`](#projenturborepoturborepoconfigpropertyglobaldependencies) | `string`[] | A list of globs for implicit global hash dependencies. |
 | [`pipeline`](#projenturborepoturborepoconfigpropertypipeline) | {[ key: string ]: [`projen-turborepo.TurborepoPipelineConfig`](#projen-turborepo.TurborepoPipelineConfig)} | An object representing the task dependency graph of your project. |
-
----
-
-##### `baseBranch`<sup>Required</sup> <a name="projen-turborepo.TurborepoConfig.property.baseBranch" id="projenturborepoturborepoconfigpropertybasebranch"></a>
-
-```typescript
-public readonly baseBranch: string;
-```
-
-- *Type:* `string`
-- *Default:* 'origin/master'
-
-The base branch or your git repository.
-
-Git is used by turbo in its hashing algorithm and `--since` CLI flag.
-
-> https://turborepo.org/docs/reference/configuration#basebranch
 
 ---
 
@@ -245,7 +227,6 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`npmignoreEnabled`](#projenturborepoturborepoprojectoptionspropertynpmignoreenabled) | `boolean` | Defines an .npmignore file. Normally this is only needed for libraries that are packaged as tarballs. |
 | [`package`](#projenturborepoturborepoprojectoptionspropertypackage) | `boolean` | Defines a `package` task that will produce an npm tarball under the artifacts directory (e.g. `dist`). |
 | [`prettier`](#projenturborepoturborepoprojectoptionspropertyprettier) | `boolean` | Setup prettier. |
-| [`prettierIgnoreEnabled`](#projenturborepoturborepoprojectoptionspropertyprettierignoreenabled) | `boolean` | Defines an .prettierIgnore file. |
 | [`prettierOptions`](#projenturborepoturborepoprojectoptionspropertyprettieroptions) | [`projen.javascript.PrettierOptions`](#projen.javascript.PrettierOptions) | Prettier options. |
 | [`projenDevDependency`](#projenturborepoturborepoprojectoptionspropertyprojendevdependency) | `boolean` | Indicates of "projen" should be installed as a devDependency. |
 | [`projenrcJs`](#projenturborepoturborepoprojectoptionspropertyprojenrcjs) | `boolean` | Generate (once) .projenrc.js (in JavaScript). Set to `false` in order to disable .projenrc.js generation. |
@@ -278,6 +259,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`tsconfigDev`](#projenturborepoturborepoprojectoptionspropertytsconfigdev) | [`projen.javascript.TypescriptConfigOptions`](#projen.javascript.TypescriptConfigOptions) | Custom tsconfig options for the development tsconfig.json file (used for testing). |
 | [`tsconfigDevFile`](#projenturborepoturborepoprojectoptionspropertytsconfigdevfile) | `string` | The name of the development tsconfig.json file. |
 | [`typescriptVersion`](#projenturborepoturborepoprojectoptionspropertytypescriptversion) | `string` | TypeScript version to use. |
+| [`pathMapping`](#projenturborepoturborepoprojectoptionspropertypathmapping) | `boolean` | Add TypeScript path maps in the root project for sub-projects. |
 | [`turbo`](#projenturborepoturborepoprojectoptionspropertyturbo) | [`projen-turborepo.TurborepoConfig`](#projen-turborepo.TurborepoConfig) | Turborepo config options. |
 
 ---
@@ -1589,19 +1571,6 @@ Setup prettier.
 
 ---
 
-##### `prettierIgnoreEnabled`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.prettierIgnoreEnabled" id="projenturborepoturborepoprojectoptionspropertyprettierignoreenabled"></a>
-
-```typescript
-public readonly prettierIgnoreEnabled: boolean;
-```
-
-- *Type:* `boolean`
-- *Default:* false
-
-Defines an .prettierIgnore file.
-
----
-
 ##### `prettierOptions`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.prettierOptions" id="projenturborepoturborepoprojectoptionspropertyprettieroptions"></a>
 
 ```typescript
@@ -1609,7 +1578,7 @@ public readonly prettierOptions: PrettierOptions;
 ```
 
 - *Type:* [`projen.javascript.PrettierOptions`](#projen.javascript.PrettierOptions)
-- *Default:* opinionated default options
+- *Default:* default options
 
 Prettier options.
 
@@ -2028,6 +1997,19 @@ public readonly typescriptVersion: string;
 TypeScript version to use.
 
 NOTE: Typescript is not semantically versioned and should remain on the same minor, so we recommend using a `~` dependency (e.g. `~1.2.3`).
+
+---
+
+##### `pathMapping`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.pathMapping" id="projenturborepoturborepoprojectoptionspropertypathmapping"></a>
+
+```typescript
+public readonly pathMapping: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+Add TypeScript path maps in the root project for sub-projects.
 
 ---
 
