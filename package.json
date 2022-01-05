@@ -57,7 +57,7 @@
     "typescript": "^4.5.4"
   },
   "peerDependencies": {
-    "projen": "0.50.2"
+    "projen": "^0.50.7"
   },
   "keywords": [
     "monorepo",
