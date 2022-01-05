@@ -50,7 +50,7 @@
     "jsii-docgen": "^4.2.25",
     "json-schema": "^0.4.0",
     "npm-check-updates": "^12",
-    "projen": "0.50.2",
+    "projen": "0.50.7",
     "standard-version": "^9",
     "ts-jest": "^27.1.2",
     "ts-node": "^9",
