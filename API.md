@@ -260,6 +260,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`tsconfigDevFile`](#projenturborepoturborepoprojectoptionspropertytsconfigdevfile) | `string` | The name of the development tsconfig.json file. |
 | [`typescriptVersion`](#projenturborepoturborepoprojectoptionspropertytypescriptversion) | `string` | TypeScript version to use. |
 | [`pathMapping`](#projenturborepoturborepoprojectoptionspropertypathmapping) | `boolean` | Add TypeScript path maps in the root project for sub-projects. |
+| [`projectReferences`](#projenturborepoturborepoprojectoptionspropertyprojectreferences) | `boolean` | Adds TypeScript project references for each sub-project that depends on other sub-project. |
 | [`turbo`](#projenturborepoturborepoprojectoptionspropertyturbo) | [`projen-turborepo.TurborepoConfig`](#projen-turborepo.TurborepoConfig) | Turborepo config options. |
 
 ---
@@ -2010,6 +2011,21 @@ public readonly pathMapping: boolean;
 - *Default:* false
 
 Add TypeScript path maps in the root project for sub-projects.
+
+---
+
+##### `projectReferences`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.projectReferences" id="projenturborepoturborepoprojectoptionspropertyprojectreferences"></a>
+
+```typescript
+public readonly projectReferences: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+Adds TypeScript project references for each sub-project that depends on other sub-project.
+
+> https://www.typescriptlang.org/docs/handbook/project-references.html
 
 ---
 
