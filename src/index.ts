@@ -229,37 +229,42 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       })
     }
 
-    if (this.pathMapping) {
-      for (const tsconfig of [this.tsconfig, this.tsconfigDev]) {
-        if (tsconfig) {
-          Object.assign(tsconfig.compilerOptions, {
-            baseUrl: '.',
-            paths: {
-              ...tsconfig.compilerOptions.paths,
-              ...paths,
-            },
-          })
-        }
-      }
-    }
+    for (const subProject of subProjects) {
+      const packageNames = Object.keys(packageNameSubProjectMap)
 
-    if (this.projectReferences) {
-      for (const subProject of subProjects) {
-        const packageNames = Object.keys(packageNameSubProjectMap)
+      if (subProject instanceof typescript.TypeScriptProject) {
+        const depProjects = subProject
+          .deps
+          .all
+          .filter(({ name }) => packageNames.includes(name))
+          .map(({ name }) => packageNameSubProjectMap[name])
 
-        if (subProject instanceof typescript.TypeScriptProject) {
-          const references = subProject
-            .deps
-            .all
-            .filter(({ name }) => packageNames.includes(name))
-            .map(({ name }) => packageNameSubProjectMap[name])
-            .map(({ outdir }) => path.relative(subProject.outdir, outdir))
-            .map((p) => ({ path: p }))
+        const references = depProjects
+          .map(({ outdir }) => path.relative(subProject.outdir, outdir))
+          .map((p) => ({ path: p }))
 
-          if (references.length > 0) {
-            for (const tsconfig of [subProject.tsconfig, subProject.tsconfigDev]) {
-              tsconfig?.file.addOverride('references', references)
+        const pathMappings: Record<string, string[]> = {}
+        if (this.pathMapping) {
+          for (const depProject of depProjects) {
+            if (depProject instanceof javascript.NodeProject) {
+              pathMappings[depProject.package.packageName] = [
+                path.relative(subProject.outdir, depProject.outdir),
+              ]
             }
+          }
+        }
+
+        for (const tsconfig of [subProject.tsconfig, subProject.tsconfigDev]) {
+          if (this.pathMapping) {
+            tsconfig?.file.addOverride('compilerOptions.baseUrl', '.')
+
+            for (const [packageName, packagePath] of Object.entries(pathMappings)) {
+              tsconfig?.file.addOverride(`compilerOptions.paths.${packageName}`, [`${packagePath}/src`])
+            }
+          }
+
+          if (this.projectReferences && references.length > 0) {
+            tsconfig?.file.addOverride('references', references)
           }
         }
       }
