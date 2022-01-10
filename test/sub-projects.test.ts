@@ -73,4 +73,43 @@ describe('TurborepoProject', () => {
 
     expect(synth['.vscode/settings.json'].eslint).toBeDefined()
   })
+
+
+  it('should set composite flag on the tsconfig', () => {
+    expect.assertions(1)
+
+    const project = createProject({ projectReferences: true })
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['tsconfig.json'].compilerOptions.composite).toBe(true)
+  })
+
+  it('should add TypeScript project references when turned on', () => {
+    expect.assertions(1)
+
+    const project = createProject({
+      projectReferences: true,
+    })
+
+    const subProjectBarDir = 'packages/bar'
+    const subProjectBar = createSubProject({
+      parent: project,
+      outdir: subProjectBarDir,
+    })
+
+    const subProjectBazDir = 'packages/baz'
+    createSubProject({
+      parent: project,
+      outdir: subProjectBazDir,
+      deps: [subProjectBar.package.packageName],
+    })
+
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['packages/baz/tsconfig.json'].references).toStrictEqual([
+      {
+        path: '../bar',
+      },
+    ])
+  })
 })

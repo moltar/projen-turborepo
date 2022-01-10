@@ -101,10 +101,20 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
    * @default false
    */
   readonly pathMapping?: boolean;
+
+  /**
+   * Adds TypeScript project references for each sub-project that depends on other sub-project.
+   *
+   * @see https://www.typescriptlang.org/docs/handbook/project-references.html
+   *
+   * @default false
+   */
+  readonly projectReferences?: boolean;
 }
 
 export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly pathMapping: boolean
+  private readonly projectReferences: boolean
 
   constructor(options: TurborepoProjectOptions) {
     super({
@@ -114,6 +124,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     })
 
     this.pathMapping = options.pathMapping ?? false
+    this.projectReferences = options.projectReferences ?? false
 
     /**
      * Add turborepo as a dependency so we have the CLI.
@@ -168,12 +179,23 @@ export class TurborepoProject extends typescript.TypeScriptProject {
      * Monorepo root package is always private!
     */
     this.package.addField('private', true)
+
+    /**
+     * @see https://www.typescriptlang.org/tsconfig/composite.html
+    */
+    if (this.projectReferences) {
+      for (const tsconfig of [this.tsconfig, this.tsconfigDev]) {
+        tsconfig?.file.addOverride('compilerOptions.composite', true)
+      }
+    }
   }
 
   private get subProjects(): Project[] {
     // https://github.com/projen/projen/issues/1433
     // @ts-ignore
-    return this.subprojects
+    const subProjects: Project[] = this.subprojects || []
+
+    return subProjects.sort((a, b) => a.name.localeCompare(b.name))
   }
 
   preSynthesize() {
@@ -181,13 +203,15 @@ export class TurborepoProject extends typescript.TypeScriptProject {
 
     const workspaces: string[] = []
     const paths: Record<string, string[]> = {}
+    const packageNameSubProjectMap: Record<string, Project> = {}
 
-    for (const subProject of subProjects?.sort((a, b) => a.name.localeCompare(b.name) )) {
+    for (const subProject of subProjects) {
       const workspace = path.relative(this.outdir, subProject.outdir)
       workspaces.push(workspace)
 
       if (subProject instanceof javascript.NodeProject) {
         paths[subProject.package.packageName] = [`${workspace}/src`]
+        packageNameSubProjectMap[subProject.package.packageName] = subProject
       }
     }
 
@@ -215,6 +239,28 @@ export class TurborepoProject extends typescript.TypeScriptProject {
               ...paths,
             },
           })
+        }
+      }
+    }
+
+    if (this.projectReferences) {
+      for (const subProject of subProjects) {
+        const packageNames = Object.keys(packageNameSubProjectMap)
+
+        if (subProject instanceof typescript.TypeScriptProject) {
+          const references = subProject
+            .deps
+            .all
+            .filter(({ name }) => packageNames.includes(name))
+            .map(({ name }) => packageNameSubProjectMap[name])
+            .map(({ outdir }) => path.relative(subProject.outdir, outdir))
+            .map((p) => ({ path: p }))
+
+          if (references.length > 0) {
+            for (const tsconfig of [subProject.tsconfig, subProject.tsconfigDev]) {
+              tsconfig?.file.addOverride('references', references)
+            }
+          }
         }
       }
     }
