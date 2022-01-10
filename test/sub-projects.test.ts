@@ -64,12 +64,27 @@ describe('TurborepoProject', () => {
 
 
   it('should set composite flag on the tsconfig', () => {
-    expect.assertions(1)
+    expect.assertions(2)
 
     const project = createProject({ projectReferences: true })
+
+    const subProjectBarDir = 'packages/bar'
+    const subProjectBar = createSubProject({
+      parent: project,
+      outdir: subProjectBarDir,
+    })
+
+    const subProjectBazDir = 'packages/baz'
+    createSubProject({
+      parent: project,
+      outdir: subProjectBazDir,
+      deps: [subProjectBar.package.packageName],
+    })
+
     const synth = synthProjectSnapshot(project)
 
     expect(synth['tsconfig.json'].compilerOptions.composite).toBe(true)
+    expect(synth['packages/baz/tsconfig.json'].compilerOptions.composite).toBe(true)
   })
 
   it('should add TypeScript project references when turned on', () => {
