@@ -127,6 +127,12 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     this.projectReferences = options.projectReferences ?? false
 
     /**
+     * Adds itself as a depdency, so that we have it in the consuming project, and
+     * can import it inside the projenrc file.
+    */
+    this.addDevDeps('projen-turborepo')
+
+    /**
      * Add turborepo as a dependency so we have the CLI.
     */
     this.addDevDeps('turbo')
