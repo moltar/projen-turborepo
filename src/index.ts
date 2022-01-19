@@ -103,6 +103,16 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
   readonly pathMapping?: boolean;
 
   /**
+ * Add jest config for `moduleNameMapper`.
+ *
+ * @see https://jestjs.io/docs/configuration#modulenamemapper-objectstring-string--arraystring
+ * @see https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
+ *
+ * @default false
+ */
+  readonly jestModuleNameMapper?: boolean;
+
+  /**
    * Adds TypeScript project references for each sub-project that depends on other sub-project.
    *
    * @see https://www.typescriptlang.org/docs/handbook/project-references.html
@@ -115,6 +125,7 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
 export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly pathMapping: boolean
   private readonly projectReferences: boolean
+  private readonly jestModuleNameMapper: boolean
 
   constructor(options: TurborepoProjectOptions) {
     super({
@@ -125,6 +136,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
 
     this.pathMapping = options.pathMapping ?? false
     this.projectReferences = options.projectReferences ?? false
+    this.jestModuleNameMapper = options.jestModuleNameMapper ?? false
 
     /**
      * Adds itself as a depdency, so that we have it in the consuming project, and
@@ -279,6 +291,25 @@ export class TurborepoProject extends typescript.TypeScriptProject {
                 }
               }
             }
+          }
+        }
+
+        if (this.jestModuleNameMapper && depProjects.length > 0) {
+          const moduleNameMapper: Record<string, string> = {}
+
+          for (const depProject of depProjects) {
+            if (depProject instanceof javascript.NodeProject) {
+              moduleNameMapper[depProject.package.packageName] = ['<rootDir>', path.relative(this.outdir, depProject.outdir)].join('/')
+            }
+          }
+
+          if (subProject.jest) {
+            Object.assign(subProject.jest.config, {
+              moduleNameMapper: {
+                ...subProject.jest.config?.moduleNameMapper,
+                ...moduleNameMapper,
+              },
+            })
           }
         }
       }

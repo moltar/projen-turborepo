@@ -115,4 +115,31 @@ describe('TurborepoProject', () => {
       },
     ])
   })
+
+  it('should add moduleNameMapper for jest', () => {
+    expect.assertions(1)
+
+    const project = createProject({
+      jestModuleNameMapper: true,
+    })
+
+    const subProjectBarDir = 'packages/bar'
+    const subProjectBar = createSubProject({
+      parent: project,
+      outdir: subProjectBarDir,
+    })
+
+    const subProjectBazDir = 'packages/baz'
+    createSubProject({
+      parent: project,
+      outdir: subProjectBazDir,
+      deps: [subProjectBar.package.packageName],
+    })
+
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['packages/baz/package.json'].jest.moduleNameMapper).toStrictEqual({
+      [subProjectBar.name]: '<rootDir>/packages/bar',
+    })
+  })
 })
