@@ -27,6 +27,12 @@ const turbo = new TurborepoProject({
       // ... your pipeline config, but defaults are already included
     },
   },
+
+  // this will probably all be true by default in the future, but for now all of these
+  // are experimental and need to be explicitly turned on.
+  pathMapping: true,
+  jestModuleNameMapper: true,
+  projectReferences: true,
 })
 
 new typescript.TypeScriptProject({
