@@ -139,7 +139,7 @@ describe('TurborepoProject', () => {
     const synth = synthProjectSnapshot(project)
 
     expect(synth['packages/baz/package.json'].jest.moduleNameMapper).toStrictEqual({
-      [subProjectBar.name]: '<rootDir>/packages/bar',
+      [`^${subProjectBar.name.replace('-', '\\-')}$`]: '../bar',
     })
   })
 })

@@ -1,5 +1,6 @@
 import * as path from 'path'
 import { typescript, Project, javascript, JsonFile } from 'projen'
+import { pathsToModuleNameMapper } from 'ts-jest'
 
 export interface TurborepoPipelineConfig {
   /**
@@ -265,13 +266,11 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           .map((p) => ({ path: p }))
 
         const pathMappings: Record<string, string[]> = {}
-        if (this.pathMapping) {
-          for (const depProject of depProjects) {
-            if (depProject instanceof javascript.NodeProject) {
-              pathMappings[depProject.package.packageName] = [
-                path.relative(subProject.outdir, depProject.outdir),
-              ]
-            }
+        for (const depProject of depProjects) {
+          if (depProject instanceof javascript.NodeProject) {
+            pathMappings[depProject.package.packageName] = [
+              path.relative(subProject.outdir, depProject.outdir),
+            ]
           }
         }
 
@@ -297,23 +296,13 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           }
         }
 
-        if (this.jestModuleNameMapper && depProjects.length > 0) {
-          const moduleNameMapper: Record<string, string> = {}
-
-          for (const depProject of depProjects) {
-            if (depProject instanceof javascript.NodeProject) {
-              moduleNameMapper[depProject.package.packageName] = ['<rootDir>', path.relative(this.outdir, depProject.outdir)].join('/')
-            }
-          }
-
-          if (subProject.jest) {
-            Object.assign(subProject.jest.config, {
-              moduleNameMapper: {
-                ...subProject.jest.config?.moduleNameMapper,
-                ...moduleNameMapper,
-              },
-            })
-          }
+        if (this.jestModuleNameMapper && depProjects.length > 0 && subProject.jest) {
+          Object.assign(subProject.jest.config, {
+            moduleNameMapper: {
+              ...subProject.jest.config?.moduleNameMapper,
+              ...pathsToModuleNameMapper(pathMappings),
+            },
+          })
         }
       }
     }
