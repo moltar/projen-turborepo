@@ -99,6 +99,7 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
    * Add TypeScript path maps in the root project for sub-projects.
    *
    * @default false
+   * @experimental
    */
   readonly pathMapping?: boolean;
 
@@ -109,6 +110,7 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
  * @see https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
  *
  * @default false
+ * @experimental
  */
   readonly jestModuleNameMapper?: boolean;
 
@@ -118,6 +120,7 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
    * @see https://www.typescriptlang.org/docs/handbook/project-references.html
    *
    * @default false
+   * @experimental
    */
   readonly projectReferences?: boolean;
 }
