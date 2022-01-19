@@ -271,7 +271,14 @@ export class TurborepoProject extends typescript.TypeScriptProject {
 
           if (this.projectReferences && references.length > 0) {
             tsconfig?.file.addOverride('references', references)
-            tsconfig?.file.addOverride('compilerOptions.composite', true)
+
+            for (const depProject of depProjects) {
+              if (depProject instanceof typescript.TypeScriptProject) {
+                for (const depTsconfig of [depProject.tsconfig, depProject.tsconfigDev]) {
+                  depTsconfig?.file.addOverride('compilerOptions.composite', true)
+                }
+              }
+            }
           }
         }
       }

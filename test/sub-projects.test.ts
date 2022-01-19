@@ -84,7 +84,7 @@ describe('TurborepoProject', () => {
     const synth = synthProjectSnapshot(project)
 
     expect(synth['tsconfig.json'].compilerOptions.composite).toBe(true)
-    expect(synth['packages/baz/tsconfig.json'].compilerOptions.composite).toBe(true)
+    expect(synth['packages/bar/tsconfig.json'].compilerOptions.composite).toBe(true)
   })
 
   it('should add TypeScript project references when turned on', () => {
