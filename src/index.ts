@@ -298,10 +298,15 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         }
 
         if (this.jestModuleNameMapper && depProjects.length > 0 && subProject.jest) {
+          const pathsToModuleNameMappings: Record<string, string[]> = {}
+          for (const [moduleName, modulePath] of Object.entries(pathMappings)) {
+            pathsToModuleNameMappings[moduleName] = [[modulePath, 'src'].join('/')]
+          }
+
           Object.assign(subProject.jest.config, {
             moduleNameMapper: {
               ...subProject.jest.config?.moduleNameMapper,
-              ...pathsToModuleNameMapper(pathMappings, { prefix: '<rootDir>' }),
+              ...pathsToModuleNameMapper(pathsToModuleNameMappings, { prefix: '<rootDir>' }),
             },
           })
         }
