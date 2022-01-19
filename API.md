@@ -259,6 +259,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`tsconfigDev`](#projenturborepoturborepoprojectoptionspropertytsconfigdev) | [`projen.javascript.TypescriptConfigOptions`](#projen.javascript.TypescriptConfigOptions) | Custom tsconfig options for the development tsconfig.json file (used for testing). |
 | [`tsconfigDevFile`](#projenturborepoturborepoprojectoptionspropertytsconfigdevfile) | `string` | The name of the development tsconfig.json file. |
 | [`typescriptVersion`](#projenturborepoturborepoprojectoptionspropertytypescriptversion) | `string` | TypeScript version to use. |
+| [`jestModuleNameMapper`](#projenturborepoturborepoprojectoptionspropertyjestmodulenamemapper) | `boolean` | Add jest config for `moduleNameMapper`. |
 | [`pathMapping`](#projenturborepoturborepoprojectoptionspropertypathmapping) | `boolean` | Add TypeScript path maps in the root project for sub-projects. |
 | [`projectReferences`](#projenturborepoturborepoprojectoptionspropertyprojectreferences) | `boolean` | Adds TypeScript project references for each sub-project that depends on other sub-project. |
 | [`turbo`](#projenturborepoturborepoprojectoptionspropertyturbo) | [`projen-turborepo.TurborepoConfig`](#projen-turborepo.TurborepoConfig) | Turborepo config options. |
@@ -1998,6 +1999,21 @@ public readonly typescriptVersion: string;
 TypeScript version to use.
 
 NOTE: Typescript is not semantically versioned and should remain on the same minor, so we recommend using a `~` dependency (e.g. `~1.2.3`).
+
+---
+
+##### `jestModuleNameMapper`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.jestModuleNameMapper" id="projenturborepoturborepoprojectoptionspropertyjestmodulenamemapper"></a>
+
+```typescript
+public readonly jestModuleNameMapper: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+Add jest config for `moduleNameMapper`.
+
+> https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
 
 ---
 
