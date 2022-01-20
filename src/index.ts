@@ -367,7 +367,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             // https://turborepo.org/docs/features/caching
             {
               name: 'Cache Turborepo',
-              uses: 'actions/checkout@v2',
+              uses: 'actions/cache@v2',
               with: {
                 path: TURBO_CACHE_DIR,
                 // I think turbo cache is not specific to environment, so we want to cache
