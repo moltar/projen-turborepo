@@ -88,8 +88,8 @@ jobs:
         with:
           path: ./node_modules/.cache/turbo
           key: turbo
-      - name: Build \${{ matrix.os }}
-        run: npx turbo run build --scope=\${{ matrix.os }} --include-dependencies
+      - name: Build \${{ matrix.scope }}
+        run: npx turbo run build --scope=\${{ matrix.scope }} --include-dependencies
           --cache-dir=\\"./node_modules/.cache/turbo\\"
     strategy:
       fail-fast: true

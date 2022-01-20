@@ -272,6 +272,8 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     // for future steps.
     if (this.parallelWorkflows) {
       const exp = (val: string) => ['${{', val, '}}'].join(' ')
+      const matrixScopeKey = 'scope'
+      const matrixScope = exp(`matrix.${matrixScopeKey}`)
 
       const nodeModulesCacheStep: JobStep = {
         name: 'Cache node_modules',
@@ -315,15 +317,15 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           },
 
           {
-            name: `Build ${exp('matrix.os')}`,
-            run: `npx turbo run build --scope=${exp('matrix.os')} --include-dependencies --cache-dir="${TURBO_CACHE_DIR}"`,
+            name: `Build ${matrixScope}`,
+            run: `npx turbo run build --scope=${matrixScope} --include-dependencies --cache-dir="${TURBO_CACHE_DIR}"`,
           },
         ],
         strategy: {
           failFast: true,
           matrix: {
             domain: {
-              scope: Object.keys(packageNameSubProjectMap),
+              [matrixScopeKey]: Object.keys(packageNameSubProjectMap),
             },
           },
         },
