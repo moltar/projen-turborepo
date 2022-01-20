@@ -183,7 +183,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         'restore-keys':
           Array(nodeModulesCacheKeyChunks.length)
             .fill(0)
-            .map((_, i) => i + 1)
+            .map((_, i) => i)
             .reverse()
             .map((chunks) => nodeModulesCacheKeyChunks.slice(0, chunks).join('-'))
             .join('\n'),
