@@ -28,10 +28,10 @@ jobs:
         run: npx projen build
       - uses: actions/cache@v2
         with:
-          path:
-            - ./node_modules
-            - ./packages/bar/node_modules
-            - ./packages/baz/node_modules
+          path: |-
+            ./node_modules
+            ./packages/bar/node_modules
+            ./packages/baz/node_modules
           key: \${{ env.GITHUB_SHA }}
       - id: self_mutation
         name: Find mutations
@@ -107,10 +107,10 @@ jobs:
         uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
-          path:
-            - ./node_modules
-            - ./packages/bar/node_modules
-            - ./packages/baz/node_modules
+          path: |-
+            ./node_modules
+            ./packages/bar/node_modules
+            ./packages/baz/node_modules
           key: \${{ env.GITHUB_SHA }}
       - uses: actions/checkout@v2
         with:
@@ -135,10 +135,10 @@ jobs:
         uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
-          path:
-            - ./node_modules
-            - ./packages/bar/node_modules
-            - ./packages/baz/node_modules
+          path: |-
+            ./node_modules
+            ./packages/bar/node_modules
+            ./packages/baz/node_modules
           key: \${{ env.GITHUB_SHA }}
       - uses: actions/checkout@v2
         with:
