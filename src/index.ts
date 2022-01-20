@@ -152,7 +152,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       jest: false,
       sampleCode: false,
       package: false,
-      artifactsDirectory: undefined,
     })
 
     this.pathMapping = options.pathMapping ?? false
