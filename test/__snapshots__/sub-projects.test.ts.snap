@@ -26,7 +26,8 @@ jobs:
         run: yarn install --check-files
       - name: build
         run: npx projen build
-      - uses: actions/cache@v2
+      - name: Cache node_modules
+        uses: actions/cache@v2
         with:
           path: |-
             ./node_modules
@@ -105,7 +106,8 @@ jobs:
           path: dist
       - name: Checkout
         uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - name: Cache node_modules
+        uses: actions/cache@v2
         with:
           path: |-
             ./node_modules
@@ -133,7 +135,8 @@ jobs:
           path: dist
       - name: Checkout
         uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - name: Cache node_modules
+        uses: actions/cache@v2
         with:
           path: |-
             ./node_modules

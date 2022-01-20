@@ -268,6 +268,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     }
 
     const cacheStep: JobStep = {
+      name: 'Cache node_modules',
       uses: 'actions/cache@v2',
       with: {
         path: [
