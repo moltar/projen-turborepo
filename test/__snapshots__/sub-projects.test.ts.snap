@@ -92,6 +92,16 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         with:
+          path: node_modules/
+          key: node_modules-\${{ runner.os }}-build-\${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |-
+            node_modules-\${{ runner.os }}-build-\${{ hashFiles('**/yarn.lock') }}
+            node_modules-\${{ runner.os }}-build
+            node_modules-\${{ runner.os }}
+            node_modules
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
           path: |-
             ./packages/bar/node_modules
             ./packages/baz/node_modules

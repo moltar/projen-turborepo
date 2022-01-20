@@ -147,7 +147,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly projectReferences: boolean
   private readonly jestModuleNameMapper: boolean
   private readonly parallelWorkflows: boolean
-  // private readonly nodeModulesCacheBootstrapStep: JobStep
+  private readonly nodeModulesCacheBootstrapStep: JobStep
 
   constructor(options: TurborepoProjectOptions) {
     const nodeModulesCacheBootstrapStep: JobStep = {
@@ -190,7 +190,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       })
     }
 
-    // this.nodeModulesCacheBootstrapStep = nodeModulesCacheBootstrapStep
+    this.nodeModulesCacheBootstrapStep = nodeModulesCacheBootstrapStep
 
     this.pathMapping = options.pathMapping ?? false
     this.projectReferences = options.projectReferences ?? false
@@ -356,6 +356,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             name: 'Checkout',
             uses: 'actions/checkout@v2',
           },
+          this.nodeModulesCacheBootstrapStep,
           nodeModulesCacheStep,
           turboCacheStep,
           {
