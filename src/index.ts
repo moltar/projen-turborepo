@@ -326,7 +326,12 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       }
 
       if (this.parallelWorkflows && subProject instanceof javascript.NodeProject) {
-        this.buildWorkflow?.addPostBuildJob(`build-${subProject.name}`, {
+        const id = `build-${subProject.name}`
+        // IDs may only contain alphanumeric characters, '_', and '-'.
+        // IDs must start with a letter or '_' and and must be less than 100 characters.
+          .replace(/\W/g, '-')
+
+        this.buildWorkflow?.addPostBuildJob(id, {
           name: `Build ${subProject.name}`,
           runsOn: ['ubuntu-latest'],
           permissions: { contents: JobPermission.READ },

@@ -150,7 +150,7 @@ describe('TurborepoProject', () => {
 
     const subProjectBarDir = 'packages/bar'
     const subProjectBar = createSubProject({
-      name: 'a-really-really-long-package-name-bar',
+      name: '@scoped/a-really-really-long-package-name-bar',
       parent: project,
       outdir: subProjectBarDir,
     })
