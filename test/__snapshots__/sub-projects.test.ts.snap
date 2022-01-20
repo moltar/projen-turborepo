@@ -83,8 +83,8 @@ jobs:
             git add .
             git commit -m \\"chore: self mutation\\"
             git push origin HEAD:\${{ github.event.pull_request.head.ref }}
-  build-bar:
-    name: Build bar
+  build-a-really-really-long-package-name-bar:
+    name: Build a-really-really-long-package-name-bar
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -96,7 +96,8 @@ jobs:
         with:
           name: build-artifact
           path: dist
-      - run: turbo run build --scope=bar --include-dependencies
+      - run: turbo run build --scope=a-really-really-long-package-name-bar
+          --include-dependencies
   build-baz:
     name: Build baz
     needs: build
