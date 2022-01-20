@@ -114,7 +114,8 @@ jobs:
             ./packages/bar/node_modules
             ./packages/baz/node_modules
           key: \${{ github.sha }}
-      - uses: actions/checkout@v2
+      - name: Cache Turborepo
+        uses: actions/checkout@v2
         with:
           path: ./node_modules/.cache/turbo
           key: turbo
@@ -143,7 +144,8 @@ jobs:
             ./packages/bar/node_modules
             ./packages/baz/node_modules
           key: \${{ github.sha }}
-      - uses: actions/checkout@v2
+      - name: Cache Turborepo
+        uses: actions/checkout@v2
         with:
           path: ./node_modules/.cache/turbo
           key: turbo
