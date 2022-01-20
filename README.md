@@ -33,6 +33,7 @@ const turbo = new TurborepoProject({
   pathMapping: true,
   jestModuleNameMapper: true,
   projectReferences: true,
+  parallelWorkflows: true,
 })
 
 new typescript.TypeScriptProject({
