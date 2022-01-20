@@ -1,6 +1,6 @@
 import * as path from 'path'
 import { typescript, Project, javascript, JsonFile } from 'projen'
-import { JobPermission } from 'projen/lib/github/workflows-model'
+import { JobPermission, JobStep } from 'projen/lib/github/workflows-model'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { pathsToModuleNameMapper } from 'ts-jest'
 
@@ -265,6 +265,22 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       })
     }
 
+    const npmInstallJobStep: JobStep = {
+      uses: 'bahmutov/npm-install@v1',
+      // with: {
+      //   'working-directory': subProjects.map(({ outdir }) => outdir)
+      //     .filter((dir) => !!dir)
+      //     .map((dir) => path.relative(this.outdir, dir))
+      //     .join('\n'),
+      // },
+    }
+
+    // Adds npm install as the last step to the built-in build job, so that we cache the deps
+    // for future steps.
+    if (this.parallelWorkflows) {
+      this.buildWorkflow?.addPostBuildSteps(npmInstallJobStep)
+    }
+
     for (const subProject of subProjects) {
       const packageNames = Object.keys(packageNameSubProjectMap)
 
@@ -336,6 +352,12 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           runsOn: ['ubuntu-latest'],
           permissions: { contents: JobPermission.READ },
           steps: [
+            {
+              name: 'Checkout',
+              uses: 'actions/checkout@v2',
+            },
+            // re-hydrate the cache from before
+            npmInstallJobStep,
             {
               run: `npx turbo run build --scope=${subProject.package.packageName} --include-dependencies`,
             },

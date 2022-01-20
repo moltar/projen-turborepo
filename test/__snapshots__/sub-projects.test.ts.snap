@@ -26,6 +26,7 @@ jobs:
         run: yarn install --check-files
       - name: build
         run: npx projen build
+      - uses: bahmutov/npm-install@v1
       - id: self_mutation
         name: Find mutations
         run: >-
@@ -96,6 +97,9 @@ jobs:
         with:
           name: build-artifact
           path: dist
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
       - run: npx turbo run build --scope=@scoped/a-really-really-long-package-name-bar
           --include-dependencies
   build-baz:
@@ -111,6 +115,9 @@ jobs:
         with:
           name: build-artifact
           path: dist
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
       - run: npx turbo run build --scope=baz --include-dependencies
 "
 `;
