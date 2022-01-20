@@ -32,7 +32,7 @@ jobs:
             ./node_modules
             ./packages/bar/node_modules
             ./packages/baz/node_modules
-          key: \${{ env.GITHUB_SHA }}
+          key: \${{ github.sha }}
       - id: self_mutation
         name: Find mutations
         run: >-
@@ -111,7 +111,7 @@ jobs:
             ./node_modules
             ./packages/bar/node_modules
             ./packages/baz/node_modules
-          key: \${{ env.GITHUB_SHA }}
+          key: \${{ github.sha }}
       - uses: actions/checkout@v2
         with:
           path: ./node_modules/.cache/turbo
@@ -139,7 +139,7 @@ jobs:
             ./node_modules
             ./packages/bar/node_modules
             ./packages/baz/node_modules
-          key: \${{ env.GITHUB_SHA }}
+          key: \${{ github.sha }}
       - uses: actions/checkout@v2
         with:
           path: ./node_modules/.cache/turbo
