@@ -1,6 +1,6 @@
 import * as path from 'path'
 import { typescript, Project, javascript, JsonFile } from 'projen'
-import { JobPermission, JobStep } from 'projen/lib/github/workflows-model'
+import { JobPermission } from 'projen/lib/github/workflows-model'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { pathsToModuleNameMapper } from 'ts-jest'
 
@@ -267,23 +267,43 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       })
     }
 
-    const cacheStep: JobStep = {
-      name: 'Cache node_modules',
-      uses: 'actions/cache@v2',
-      with: {
-        path: [
-          './node_modules',
-          ...workspaces.map((workspace) => `./${workspace}/node_modules`),
-        ].join('\n'),
-        // use the SHA for cache key, as we only need to keep the cache between the jobs
-        key: '${{ github.sha }}',
-      },
-    }
-
     // Adds npm install as the last step to the built-in build job, so that we cache the deps
     // for future steps.
     if (this.parallelWorkflows) {
-      this.buildWorkflow?.addPostBuildSteps(cacheStep)
+      const exp = (val: string) => ['${{', val, '}}'].join(' ')
+
+      this.buildWorkflow?.addPostBuildJob('turbo', {
+        name: 'Build Turbo',
+        runsOn: ['ubuntu-latest'],
+        permissions: { contents: JobPermission.READ },
+        steps: [
+          // Turborepo cache
+          // https://turborepo.org/docs/features/caching
+          {
+            name: 'Cache Turborepo',
+            uses: 'actions/cache@v2',
+            with: {
+              path: TURBO_CACHE_DIR,
+              // I think turbo cache is not specific to environment, so we want to cache
+              // all of it.
+              // TODO: How do prune cache eventually?
+              key: 'turbo',
+            },
+          },
+          {
+            name: `Build ${exp('matrix.os')}`,
+            run: `npx turbo run build --scope=${exp('matrix.os')} --include-dependencies --cache-dir="${TURBO_CACHE_DIR}"`,
+          },
+        ],
+        strategy: {
+          failFast: true,
+          matrix: {
+            domain: {
+              scope: Object.keys(packageNameSubProjectMap),
+            },
+          },
+        },
+      })
     }
 
     for (const subProject of subProjects) {
@@ -344,43 +364,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             },
           })
         }
-      }
-
-      if (this.parallelWorkflows && subProject instanceof javascript.NodeProject) {
-        const id = `build-${subProject.name}`
-        // IDs may only contain alphanumeric characters, '_', and '-'.
-        // IDs must start with a letter or '_' and and must be less than 100 characters.
-          .replace(/\W/g, '-')
-
-        this.buildWorkflow?.addPostBuildJob(id, {
-          name: `Build ${subProject.name}`,
-          runsOn: ['ubuntu-latest'],
-          permissions: { contents: JobPermission.READ },
-          steps: [
-            {
-              name: 'Checkout',
-              uses: 'actions/checkout@v2',
-            },
-            // re-hydrate the cache from before
-            cacheStep,
-            // Turborepo cache
-            // https://turborepo.org/docs/features/caching
-            {
-              name: 'Cache Turborepo',
-              uses: 'actions/cache@v2',
-              with: {
-                path: TURBO_CACHE_DIR,
-                // I think turbo cache is not specific to environment, so we want to cache
-                // all of it.
-                // TODO: How do prune cache eventually?
-                key: 'turbo',
-              },
-            },
-            {
-              run: `npx turbo run build --scope=${subProject.package.packageName} --include-dependencies --cache-dir="${TURBO_CACHE_DIR}"`,
-            },
-          ],
-        })
       }
     }
   }

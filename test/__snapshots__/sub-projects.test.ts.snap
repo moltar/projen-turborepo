@@ -26,14 +26,6 @@ jobs:
         run: yarn install --check-files
       - name: build
         run: npx projen build
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: |-
-            ./node_modules
-            ./packages/bar/node_modules
-            ./packages/baz/node_modules
-          key: \${{ github.sha }}
       - id: self_mutation
         name: Find mutations
         run: >-
@@ -91,8 +83,8 @@ jobs:
             git add .
             git commit -m \\"chore: self mutation\\"
             git push origin HEAD:\${{ github.event.pull_request.head.ref }}
-  build--scoped-a-really-really-long-package-name-bar:
-    name: Build @scoped/a-really-really-long-package-name-bar
+  turbo:
+    name: Build Turbo
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -104,53 +96,20 @@ jobs:
         with:
           name: build-artifact
           path: dist
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: |-
-            ./node_modules
-            ./packages/bar/node_modules
-            ./packages/baz/node_modules
-          key: \${{ github.sha }}
       - name: Cache Turborepo
         uses: actions/cache@v2
         with:
           path: ./node_modules/.cache/turbo
           key: turbo
-      - run: npx turbo run build --scope=@scoped/a-really-really-long-package-name-bar
-          --include-dependencies --cache-dir=\\"./node_modules/.cache/turbo\\"
-  build-baz:
-    name: Build baz
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    if: \\"! needs.build.outputs.self_mutation_happened\\"
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: build-artifact
-          path: dist
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        with:
-          path: |-
-            ./node_modules
-            ./packages/bar/node_modules
-            ./packages/baz/node_modules
-          key: \${{ github.sha }}
-      - name: Cache Turborepo
-        uses: actions/cache@v2
-        with:
-          path: ./node_modules/.cache/turbo
-          key: turbo
-      - run: npx turbo run build --scope=baz --include-dependencies
+      - name: Build \${{ matrix.os }}
+        run: npx turbo run build --scope=\${{ matrix.os }} --include-dependencies
           --cache-dir=\\"./node_modules/.cache/turbo\\"
+    strategy:
+      fail-fast: true
+      matrix:
+        scope:
+          - \\"@scoped/a-really-really-long-package-name-bar\\"
+          - baz
 "
 `;
 
