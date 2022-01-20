@@ -1,5 +1,6 @@
 import * as path from 'path'
 import { typescript, Project, javascript, JsonFile } from 'projen'
+import { JobPermission } from 'projen/lib/github/workflows-model'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { pathsToModuleNameMapper } from 'ts-jest'
 
@@ -125,12 +126,23 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
    * @experimental
    */
   readonly projectReferences?: boolean;
+
+  /**
+   * **GitHub Build Workflows**
+   *
+   * Adds parallel GitHub Build workflows for each sub-project.
+   *
+   * @default false
+   * @experimental
+   */
+  readonly parallelWorkflows?: boolean;
 }
 
 export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly pathMapping: boolean
   private readonly projectReferences: boolean
   private readonly jestModuleNameMapper: boolean
+  private readonly parallelWorkflows: boolean
 
   constructor(options: TurborepoProjectOptions) {
     super({
@@ -142,6 +154,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     this.pathMapping = options.pathMapping ?? false
     this.projectReferences = options.projectReferences ?? false
     this.jestModuleNameMapper = options.jestModuleNameMapper ?? false
+    this.parallelWorkflows = options.parallelWorkflows ?? false
 
     /**
      * Adds itself as a depdency, so that we have it in the consuming project, and
@@ -310,6 +323,19 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             },
           })
         }
+      }
+
+      if (this.parallelWorkflows && subProject instanceof javascript.NodeProject) {
+        this.buildWorkflow?.addPostBuildJob(`build-${subProject.name}`, {
+          name: `Build ${subProject.name}`,
+          runsOn: ['ubuntu-latest'],
+          permissions: { contents: JobPermission.READ },
+          steps: [
+            {
+              run: `turbo run build --scope=${subProject.package.packageName} --include-dependencies`,
+            },
+          ],
+        })
       }
     }
   }
