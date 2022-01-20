@@ -147,6 +147,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly projectReferences: boolean
   private readonly jestModuleNameMapper: boolean
   private readonly parallelWorkflows: boolean
+  // private readonly nodeModulesCacheBootstrapStep: JobStep
 
   constructor(options: TurborepoProjectOptions) {
     const nodeModulesCacheBootstrapStep: JobStep = {
@@ -188,6 +189,8 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             .join('\n'),
       })
     }
+
+    // this.nodeModulesCacheBootstrapStep = nodeModulesCacheBootstrapStep
 
     this.pathMapping = options.pathMapping ?? false
     this.projectReferences = options.projectReferences ?? false
@@ -314,7 +317,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         uses: 'actions/cache@v2',
         with: {
           path: [
-            './node_modules',
             ...workspaces.map((workspace) => `./${workspace}/node_modules`),
           ].join('\n'),
           // use the SHA for cache key, as we only need to keep the cache between the jobs

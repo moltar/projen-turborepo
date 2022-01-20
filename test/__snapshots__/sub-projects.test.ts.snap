@@ -40,7 +40,6 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |-
-            ./node_modules
             ./packages/bar/node_modules
             ./packages/baz/node_modules
           key: \${{ github.sha }}
@@ -94,7 +93,6 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |-
-            ./node_modules
             ./packages/bar/node_modules
             ./packages/baz/node_modules
           key: \${{ github.sha }}
