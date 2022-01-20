@@ -185,7 +185,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             .fill(0)
             .map((_, i) => i)
             .reverse()
-            .map((chunks) => nodeModulesCacheKeyChunks.slice(0, chunks).join('-'))
+            .map((chunks) => [...nodeModulesCacheKeyChunks.slice(0, chunks), undefined].join('-'))
             .join('\n'),
       })
     }

@@ -28,9 +28,9 @@ jobs:
           path: node_modules/
           key: node_modules-\${{ runner.os }}-build-\${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            node_modules-\${{ runner.os }}-build
-            node_modules-\${{ runner.os }}
-            node_modules
+            node_modules-\${{ runner.os }}-build-
+            node_modules-\${{ runner.os }}-
+            node_modules-
       - name: Install dependencies
         run: yarn install --check-files
       - name: build
@@ -94,9 +94,9 @@ jobs:
           path: node_modules/
           key: node_modules-\${{ runner.os }}-build-\${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            node_modules-\${{ runner.os }}-build
-            node_modules-\${{ runner.os }}
-            node_modules
+            node_modules-\${{ runner.os }}-build-
+            node_modules-\${{ runner.os }}-
+            node_modules-
       - name: Cache node_modules
         uses: actions/cache@v2
         with:
@@ -186,9 +186,9 @@ jobs:
           path: node_modules/
           key: node_modules-\${{ runner.os }}-build-\${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            node_modules-\${{ runner.os }}-build
-            node_modules-\${{ runner.os }}
-            node_modules
+            node_modules-\${{ runner.os }}-build-
+            node_modules-\${{ runner.os }}-
+            node_modules-
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: release
@@ -295,9 +295,9 @@ jobs:
           path: node_modules/
           key: node_modules-\${{ runner.os }}-build-\${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            node_modules-\${{ runner.os }}-build
-            node_modules-\${{ runner.os }}
-            node_modules
+            node_modules-\${{ runner.os }}-build-
+            node_modules-\${{ runner.os }}-
+            node_modules-
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: Upgrade dependencies
