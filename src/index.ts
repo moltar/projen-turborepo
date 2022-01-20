@@ -151,6 +151,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       ...options,
       jest: false,
       sampleCode: false,
+      package: false,
     })
 
     this.pathMapping = options.pathMapping ?? false
