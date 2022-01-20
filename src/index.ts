@@ -313,7 +313,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       const matrixScope = exp(`matrix.${matrixScopeKey}`)
 
       const nodeModulesCacheStep: JobStep = {
-        name: 'Cache node_modules',
+        name: 'Cache workspace node_modules',
         uses: 'actions/cache@v2',
         with: {
           path: [

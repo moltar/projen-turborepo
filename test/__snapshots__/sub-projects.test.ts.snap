@@ -35,7 +35,7 @@ jobs:
         run: yarn install --check-files
       - name: build
         run: npx projen build
-      - name: Cache node_modules
+      - name: Cache workspace node_modules
         uses: actions/cache@v2
         with:
           path: |-
@@ -97,7 +97,7 @@ jobs:
             node_modules-\${{ runner.os }}-build-
             node_modules-\${{ runner.os }}-
             node_modules-
-      - name: Cache node_modules
+      - name: Cache workspace node_modules
         uses: actions/cache@v2
         with:
           path: |-
