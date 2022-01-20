@@ -284,7 +284,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             ...workspaces.map((workspace) => `./${workspace}/node_modules`),
           ].join('\n'),
           // use the SHA for cache key, as we only need to keep the cache between the jobs
-          key: '${{ github.sha }}',
+          key: exp('github.sha'),
         },
       }
 
