@@ -260,6 +260,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`tsconfigDevFile`](#projenturborepoturborepoprojectoptionspropertytsconfigdevfile) | `string` | The name of the development tsconfig.json file. |
 | [`typescriptVersion`](#projenturborepoturborepoprojectoptionspropertytypescriptversion) | `string` | TypeScript version to use. |
 | [`jestModuleNameMapper`](#projenturborepoturborepoprojectoptionspropertyjestmodulenamemapper) | `boolean` | Add jest config for `moduleNameMapper`. |
+| [`parallelWorkflows`](#projenturborepoturborepoprojectoptionspropertyparallelworkflows) | `boolean` | **GitHub Build Workflows**. |
 | [`pathMapping`](#projenturborepoturborepoprojectoptionspropertypathmapping) | `boolean` | Add TypeScript path maps in the root project for sub-projects. |
 | [`projectReferences`](#projenturborepoturborepoprojectoptionspropertyprojectreferences) | `boolean` | Adds TypeScript project references for each sub-project that depends on other sub-project. |
 | [`turbo`](#projenturborepoturborepoprojectoptionspropertyturbo) | [`projen-turborepo.TurborepoConfig`](#projen-turborepo.TurborepoConfig) | Turborepo config options. |
@@ -2014,6 +2015,21 @@ public readonly jestModuleNameMapper: boolean;
 Add jest config for `moduleNameMapper`.
 
 > https://kulshekhar.github.io/ts-jest/docs/getting-started/paths-mapping/
+
+---
+
+##### `parallelWorkflows`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.parallelWorkflows" id="projenturborepoturborepoprojectoptionspropertyparallelworkflows"></a>
+
+```typescript
+public readonly parallelWorkflows: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+**GitHub Build Workflows**.
+
+Adds parallel GitHub Build workflows for each sub-project.
 
 ---
 
