@@ -140,6 +140,8 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
   readonly parallelWorkflows?: boolean;
 }
 
+const exp = (val: string) => ['${{', val, '}}'].join(' ')
+
 export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly pathMapping: boolean
   private readonly projectReferences: boolean
@@ -147,12 +149,45 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly parallelWorkflows: boolean
 
   constructor(options: TurborepoProjectOptions) {
+    const nodeModulesCacheBootstrapStep: JobStep = {
+      name: 'Cache node_modules',
+      uses: 'actions/cache@v2',
+      with: {
+        path: 'node_modules/',
+      },
+    }
+
     super({
       ...options,
       jest: false,
       sampleCode: false,
       package: false,
+      workflowBootstrapSteps: [
+        nodeModulesCacheBootstrapStep,
+      ],
     })
+
+    // Because we do not know the value of `this.package.lockFile` before super, we cannot
+    // add the cache key which uses the lockfile name, we add it later
+    if (nodeModulesCacheBootstrapStep && nodeModulesCacheBootstrapStep.with) {
+      const nodeModulesCacheKeyChunks = [
+        'node_modules',
+        exp('runner.os'),
+        'build',
+        exp(`hashFiles('**/${this.package.lockFile}')`),
+      ]
+
+      Object.assign(nodeModulesCacheBootstrapStep.with, {
+        'key': nodeModulesCacheKeyChunks.join('-'),
+        'restore-keys':
+          Array(nodeModulesCacheKeyChunks.length)
+            .fill(0)
+            .map((_, i) => i + 1)
+            .reverse()
+            .map((chunks) => nodeModulesCacheKeyChunks.slice(0, chunks).join('-'))
+            .join('\n'),
+      })
+    }
 
     this.pathMapping = options.pathMapping ?? false
     this.projectReferences = options.projectReferences ?? false
@@ -271,7 +306,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     // Adds npm install as the last step to the built-in build job, so that we cache the deps
     // for future steps.
     if (this.parallelWorkflows) {
-      const exp = (val: string) => ['${{', val, '}}'].join(' ')
       const matrixScopeKey = 'scope'
       const matrixScope = exp(`matrix.${matrixScopeKey}`)
 
