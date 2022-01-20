@@ -319,7 +319,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           },
 
           {
-            name: `Build ${matrixScope}`,
+            name: 'Build',
             run: `npx turbo run build --scope=${matrixScope} --include-dependencies --cache-dir="${TURBO_CACHE_DIR}"`,
           },
         ],
