@@ -87,7 +87,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./node_modules/.cache/turbo
-          key: turbo
+          key: turbo-\${{ matrix.scope }}
       - name: Build \${{ matrix.scope }}
         run: npx turbo run build --scope=\${{ matrix.scope }} --include-dependencies
           --cache-dir=\\"./node_modules/.cache/turbo\\"

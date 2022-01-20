@@ -309,10 +309,12 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             uses: 'actions/cache@v2',
             with: {
               path: TURBO_CACHE_DIR,
-              // I think turbo cache is not specific to environment, so we want to cache
-              // all of it.
+              // I think turbo cache is not specific to environment, so we want to cache all of it.
+              // If we use one key for all packages, then GitHub ignores caching with the following:
+              // > Unable to reserve cache with key turbo, another job may be creating this cache.
+              //
               // TODO: How do prune cache eventually?
-              key: 'turbo',
+              key: `turbo-${matrixScope}`,
             },
           },
 
