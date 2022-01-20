@@ -102,8 +102,12 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           install-command: true
+      - uses: actions/checkout@v2
+        with:
+          path: ./node_modules/.cache/turbo
+          key: turbo
       - run: npx turbo run build --scope=@scoped/a-really-really-long-package-name-bar
-          --include-dependencies
+          --include-dependencies --cache-dir=\\"./node_modules/.cache/turbo\\"
   build-baz:
     name: Build baz
     needs: build
@@ -122,7 +126,12 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           install-command: true
+      - uses: actions/checkout@v2
+        with:
+          path: ./node_modules/.cache/turbo
+          key: turbo
       - run: npx turbo run build --scope=baz --include-dependencies
+          --cache-dir=\\"./node_modules/.cache/turbo\\"
 "
 `;
 

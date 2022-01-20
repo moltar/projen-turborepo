@@ -4,6 +4,8 @@ import { JobPermission, JobStep } from 'projen/lib/github/workflows-model'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { pathsToModuleNameMapper } from 'ts-jest'
 
+const TURBO_CACHE_DIR = './node_modules/.cache/turbo'
+
 export interface TurborepoPipelineConfig {
   /**
    * The list of tasks that this task depends on.
@@ -363,8 +365,20 @@ export class TurborepoProject extends typescript.TypeScriptProject {
                 'install-command': true,
               },
             },
+            // Turborepo cache
+            // https://turborepo.org/docs/features/caching
             {
-              run: `npx turbo run build --scope=${subProject.package.packageName} --include-dependencies`,
+              uses: 'actions/checkout@v2',
+              with: {
+                path: TURBO_CACHE_DIR,
+                // I think turbo cache is not specific to environment, so we want to cache
+                // all of it.
+                // TODO: How do prune cache eventually?
+                key: 'turbo',
+              },
+            },
+            {
+              run: `npx turbo run build --scope=${subProject.package.packageName} --include-dependencies --cache-dir="${TURBO_CACHE_DIR}"`,
             },
           ],
         })
