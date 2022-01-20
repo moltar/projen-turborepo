@@ -290,7 +290,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       this.buildWorkflow?.addPostBuildSteps(nodeModulesCacheStep)
 
       this.buildWorkflow?.addPostBuildJob('turbo', {
-        name: 'Build Turbo',
+        name: 'build',
         runsOn: ['ubuntu-latest'],
         permissions: { contents: JobPermission.READ },
         steps: [

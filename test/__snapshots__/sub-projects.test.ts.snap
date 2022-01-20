@@ -92,7 +92,7 @@ jobs:
             git commit -m \\"chore: self mutation\\"
             git push origin HEAD:\${{ github.event.pull_request.head.ref }}
   turbo:
-    name: Build Turbo
+    name: build
     needs: build
     runs-on: ubuntu-latest
     permissions:
