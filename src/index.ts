@@ -357,7 +357,12 @@ export class TurborepoProject extends typescript.TypeScriptProject {
               uses: 'actions/checkout@v2',
             },
             // re-hydrate the cache from before
-            npmInstallJobStep,
+            {
+              uses: 'bahmutov/npm-install@v1',
+              with: {
+                installCommand: true,
+              },
+            },
             {
               run: `npx turbo run build --scope=${subProject.package.packageName} --include-dependencies`,
             },
