@@ -101,7 +101,7 @@ jobs:
         uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
         with:
-          installCommand: true
+          install-command: true
       - run: npx turbo run build --scope=@scoped/a-really-really-long-package-name-bar
           --include-dependencies
   build-baz:
@@ -121,7 +121,7 @@ jobs:
         uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
         with:
-          installCommand: true
+          install-command: true
       - run: npx turbo run build --scope=baz --include-dependencies
 "
 `;

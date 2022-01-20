@@ -360,7 +360,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             {
               uses: 'bahmutov/npm-install@v1',
               with: {
-                installCommand: true,
+                'install-command': true,
               },
             },
             {
