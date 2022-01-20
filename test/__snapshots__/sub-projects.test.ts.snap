@@ -73,6 +73,8 @@ jobs:
         with:
           name: build-artifact
           path: dist
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Cache node_modules
         uses: actions/cache@v2
         with:

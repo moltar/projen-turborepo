@@ -293,6 +293,11 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         runsOn: ['ubuntu-latest'],
         permissions: { contents: JobPermission.READ },
         steps: [
+          {
+            name: 'Checkout',
+            uses: 'actions/checkout@v2',
+          },
+
           nodeModulesCacheStep,
 
           // Turborepo cache
