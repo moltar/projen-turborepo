@@ -26,6 +26,14 @@ jobs:
         run: yarn install --check-files
       - name: build
         run: npx projen build
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: |-
+            ./node_modules
+            ./packages/bar/node_modules
+            ./packages/baz/node_modules
+          key: \${{ github.sha }}
       - id: self_mutation
         name: Find mutations
         run: >-
@@ -96,6 +104,14 @@ jobs:
         with:
           name: build-artifact
           path: dist
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: |-
+            ./node_modules
+            ./packages/bar/node_modules
+            ./packages/baz/node_modules
+          key: \${{ github.sha }}
       - name: Cache Turborepo
         uses: actions/cache@v2
         with:

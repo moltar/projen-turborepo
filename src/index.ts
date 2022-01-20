@@ -1,6 +1,6 @@
 import * as path from 'path'
 import { typescript, Project, javascript, JsonFile } from 'projen'
-import { JobPermission } from 'projen/lib/github/workflows-model'
+import { JobPermission, JobStep } from 'projen/lib/github/workflows-model'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { pathsToModuleNameMapper } from 'ts-jest'
 
@@ -272,11 +272,28 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     if (this.parallelWorkflows) {
       const exp = (val: string) => ['${{', val, '}}'].join(' ')
 
+      const nodeModulesCacheStep: JobStep = {
+        name: 'Cache node_modules',
+        uses: 'actions/cache@v2',
+        with: {
+          path: [
+            './node_modules',
+            ...workspaces.map((workspace) => `./${workspace}/node_modules`),
+          ].join('\n'),
+          // use the SHA for cache key, as we only need to keep the cache between the jobs
+          key: '${{ github.sha }}',
+        },
+      }
+
+      this.buildWorkflow?.addPostBuildSteps(nodeModulesCacheStep)
+
       this.buildWorkflow?.addPostBuildJob('turbo', {
         name: 'Build Turbo',
         runsOn: ['ubuntu-latest'],
         permissions: { contents: JobPermission.READ },
         steps: [
+          nodeModulesCacheStep,
+
           // Turborepo cache
           // https://turborepo.org/docs/features/caching
           {
@@ -290,6 +307,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
               key: 'turbo',
             },
           },
+
           {
             name: `Build ${exp('matrix.os')}`,
             run: `npx turbo run build --scope=${exp('matrix.os')} --include-dependencies --cache-dir="${TURBO_CACHE_DIR}"`,
