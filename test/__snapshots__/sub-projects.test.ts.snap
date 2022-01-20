@@ -26,7 +26,13 @@ jobs:
         run: yarn install --check-files
       - name: build
         run: npx projen build
-      - uses: bahmutov/npm-install@v1
+      - uses: actions/cache@v2
+        with:
+          path:
+            - ./node_modules
+            - ./packages/bar/node_modules
+            - ./packages/baz/node_modules
+          key: \${{ env.GITHUB_SHA }}
       - id: self_mutation
         name: Find mutations
         run: >-
@@ -99,9 +105,13 @@ jobs:
           path: dist
       - name: Checkout
         uses: actions/checkout@v2
-      - uses: bahmutov/npm-install@v1
+      - uses: actions/cache@v2
         with:
-          install-command: true
+          path:
+            - ./node_modules
+            - ./packages/bar/node_modules
+            - ./packages/baz/node_modules
+          key: \${{ env.GITHUB_SHA }}
       - uses: actions/checkout@v2
         with:
           path: ./node_modules/.cache/turbo
@@ -123,9 +133,13 @@ jobs:
           path: dist
       - name: Checkout
         uses: actions/checkout@v2
-      - uses: bahmutov/npm-install@v1
+      - uses: actions/cache@v2
         with:
-          install-command: true
+          path:
+            - ./node_modules
+            - ./packages/bar/node_modules
+            - ./packages/baz/node_modules
+          key: \${{ env.GITHUB_SHA }}
       - uses: actions/checkout@v2
         with:
           path: ./node_modules/.cache/turbo

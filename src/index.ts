@@ -267,20 +267,22 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       })
     }
 
-    const npmInstallJobStep: JobStep = {
-      uses: 'bahmutov/npm-install@v1',
-      // with: {
-      //   'working-directory': subProjects.map(({ outdir }) => outdir)
-      //     .filter((dir) => !!dir)
-      //     .map((dir) => path.relative(this.outdir, dir))
-      //     .join('\n'),
-      // },
+    const cacheStep: JobStep = {
+      uses: 'actions/cache@v2',
+      with: {
+        path: [
+          './node_modules',
+          ...workspaces.map((workspace) => `./${workspace}/node_modules`),
+        ],
+        // use the SHA for cache key, as we only need to keep the cache between the jobs
+        key: '${{ env.GITHUB_SHA }}',
+      },
     }
 
     // Adds npm install as the last step to the built-in build job, so that we cache the deps
     // for future steps.
     if (this.parallelWorkflows) {
-      this.buildWorkflow?.addPostBuildSteps(npmInstallJobStep)
+      this.buildWorkflow?.addPostBuildSteps(cacheStep)
     }
 
     for (const subProject of subProjects) {
@@ -359,12 +361,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
               uses: 'actions/checkout@v2',
             },
             // re-hydrate the cache from before
-            {
-              uses: 'bahmutov/npm-install@v1',
-              with: {
-                'install-command': true,
-              },
-            },
+            cacheStep,
             // Turborepo cache
             // https://turborepo.org/docs/features/caching
             {
