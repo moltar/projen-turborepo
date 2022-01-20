@@ -96,7 +96,7 @@ jobs:
         with:
           name: build-artifact
           path: dist
-      - run: turbo run build --scope=@scoped/a-really-really-long-package-name-bar
+      - run: npx turbo run build --scope=@scoped/a-really-really-long-package-name-bar
           --include-dependencies
   build-baz:
     name: Build baz
@@ -111,7 +111,7 @@ jobs:
         with:
           name: build-artifact
           path: dist
-      - run: turbo run build --scope=baz --include-dependencies
+      - run: npx turbo run build --scope=baz --include-dependencies
 "
 `;
 

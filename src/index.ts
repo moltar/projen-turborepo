@@ -337,7 +337,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           permissions: { contents: JobPermission.READ },
           steps: [
             {
-              run: `turbo run build --scope=${subProject.package.packageName} --include-dependencies`,
+              run: `npx turbo run build --scope=${subProject.package.packageName} --include-dependencies`,
             },
           ],
         })
