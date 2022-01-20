@@ -324,17 +324,33 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         },
       }
 
+      // https://github.com/vercel/turborepo/issues/451#issuecomment-1002409285
+      const turboCacheKeyChunks = [
+        'turbo',
+        exp('runner.os'),
+        'build',
+        exp('github.ref_name'),
+        exp('github.sha'),
+      ]
+
       // Turborepo cache
       // https://turborepo.org/docs/features/caching
       const turboCacheStep: JobStep = {
         name: 'Cache Turborepo',
         uses: 'actions/cache@v2',
         with: {
-          path: TURBO_CACHE_DIR,
+          'path': TURBO_CACHE_DIR,
           // I think turbo cache is not specific to environment, so we want to cache all of it.
           //
           // TODO: How do prune cache eventually?
-          key: 'turbo',
+          'key': turboCacheKeyChunks.join('-'),
+          'restore-keys':
+            Array(turboCacheKeyChunks.length)
+              .fill(0)
+              .map((_, i) => i)
+              .reverse()
+              .map((chunks) => [...turboCacheKeyChunks.slice(0, chunks), undefined].join('-'))
+              .join('\n'),
         },
       }
 
