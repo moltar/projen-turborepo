@@ -146,6 +146,7 @@ describe('TurborepoProject', () => {
   describe('for each sub-project', () => {
     const project = createProject({
       parallelWorkflows: true,
+      mutableBuild: false,
     })
 
     const subProjectBarDir = 'packages/bar'
