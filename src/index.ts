@@ -298,22 +298,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       const matrixScopeKey = 'scope'
       const matrixScope = exp(`matrix.${matrixScopeKey}`)
 
-      const nodeModulesCacheStep: JobStep = {
-        name: 'Cache workspace node_modules',
-        uses: 'actions/cache@v2',
-        with: {
-          path: [
-            ...workspaces.map((workspace) => `./${workspace}/node_modules`),
-          ].join('\n'),
-          // use the SHA for cache key, as we only need to keep the cache between the jobs
-          key: exp('github.sha'),
-        },
-      }
-
-      this.buildWorkflow?.addPostBuildSteps(
-        nodeModulesCacheStep,
-      )
-
       this.buildWorkflow?.addPostBuildJob('turbo', {
         name: 'build',
         runsOn: ['ubuntu-latest'],
@@ -324,7 +308,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             uses: 'actions/checkout@v2',
           },
           this.setupNodeStep,
-          nodeModulesCacheStep,
           {
             name: 'Build',
             run: `npx turbo run build --scope=${matrixScope} --include-dependencies --cache-dir="${TURBO_CACHE_DIR}"`,
