@@ -1,7 +1,6 @@
 import * as path from 'path'
 import { typescript, Project, javascript, JsonFile } from 'projen'
 import { JobPermission, JobStep } from 'projen/lib/github/workflows-model'
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { pathsToModuleNameMapper } from 'ts-jest'
 
 export interface TurborepoPipelineConfig {

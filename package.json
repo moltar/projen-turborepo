@@ -59,6 +59,9 @@
   "peerDependencies": {
     "projen": "^0.50.17"
   },
+  "dependencies": {
+    "ts-jest": "^27.1.3"
+  },
   "keywords": [
     "monorepo",
     "projen",

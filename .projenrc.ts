@@ -26,6 +26,7 @@ const project = new cdk.JsiiProject({
   authorEmail: authorAddress,
   projenrcTs: true,
   packageManager: javascript.NodePackageManager.NPM,
+  deps: ['ts-jest'],
   peerDeps: [
     projen,
   ],
