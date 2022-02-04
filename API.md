@@ -210,6 +210,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`autoApproveProjenUpgrades`](#projenturborepoturborepoprojectoptionspropertyautoapproveprojenupgrades) | `boolean` | Automatically approve projen upgrade PRs, allowing them to be merged by mergify (if configued). |
 | [`autoApproveUpgrades`](#projenturborepoturborepoprojectoptionspropertyautoapproveupgrades) | `boolean` | Automatically approve deps upgrade PRs, allowing them to be merged by mergify (if configued). |
 | [`buildWorkflow`](#projenturborepoturborepoprojectoptionspropertybuildworkflow) | `boolean` | Define a GitHub workflow for building PRs. |
+| [`buildWorkflowTriggers`](#projenturborepoturborepoprojectoptionspropertybuildworkflowtriggers) | [`projen.github.workflows.Triggers`](#projen.github.workflows.Triggers) | Build workflow triggers. |
 | [`bundlerOptions`](#projenturborepoturborepoprojectoptionspropertybundleroptions) | [`projen.javascript.BundlerOptions`](#projen.javascript.BundlerOptions) | Options for `Bundler`. |
 | [`codeCov`](#projenturborepoturborepoprojectoptionspropertycodecov) | `boolean` | Define a GitHub workflow step for sending code coverage metrics to https://codecov.io/ Uses codecov/codecov-action@v1 A secret is required for private repos. Configured with @codeCovTokenSecret. |
 | [`codeCovTokenSecret`](#projenturborepoturborepoprojectoptionspropertycodecovtokensecret) | `string` | Define the secret name for a specified https://codecov.io/ token A secret is required to send coverage for private repositories. |
@@ -1345,6 +1346,19 @@ public readonly buildWorkflow: boolean;
 - *Default:* true if not a subproject
 
 Define a GitHub workflow for building PRs.
+
+---
+
+##### `buildWorkflowTriggers`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.buildWorkflowTriggers" id="projenturborepoturborepoprojectoptionspropertybuildworkflowtriggers"></a>
+
+```typescript
+public readonly buildWorkflowTriggers: Triggers;
+```
+
+- *Type:* [`projen.github.workflows.Triggers`](#projen.github.workflows.Triggers)
+- *Default:* "{ pullRequest: {}, workflowDispatch: {} }"
+
+Build workflow triggers.
 
 ---
 
