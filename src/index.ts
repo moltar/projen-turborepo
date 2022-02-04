@@ -147,15 +147,13 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly projectReferences: boolean
   private readonly jestModuleNameMapper: boolean
   private readonly parallelWorkflows: boolean
-  private readonly nodeModulesCacheBootstrapStep: JobStep
+  private readonly setupNodeStep: JobStep
 
   constructor(options: TurborepoProjectOptions) {
-    const nodeModulesCacheBootstrapStep: JobStep = {
-      name: 'Cache node_modules',
-      uses: 'actions/cache@v2',
-      with: {
-        path: 'node_modules/',
-      },
+    const setupNodeStep: JobStep = {
+      name: 'Setup node',
+      uses: 'actions/setup-node@v2',
+      with: {},
     }
 
     super({
@@ -164,33 +162,21 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       sampleCode: false,
       package: false,
       workflowBootstrapSteps: [
-        nodeModulesCacheBootstrapStep,
+        setupNodeStep,
       ],
     })
 
     // Because we do not know the value of `this.package.lockFile` before super, we cannot
     // add the cache key which uses the lockfile name, we add it later
-    if (nodeModulesCacheBootstrapStep && nodeModulesCacheBootstrapStep.with) {
-      const nodeModulesCacheKeyChunks = [
-        'node_modules',
-        exp('runner.os'),
-        'build',
-        exp(`hashFiles('**/${this.package.lockFile}')`),
-      ]
-
-      Object.assign(nodeModulesCacheBootstrapStep.with, {
-        'key': nodeModulesCacheKeyChunks.join('-'),
-        'restore-keys':
-          Array(nodeModulesCacheKeyChunks.length)
-            .fill(0)
-            .map((_, i) => i)
-            .reverse()
-            .map((chunks) => [...nodeModulesCacheKeyChunks.slice(0, chunks), undefined].join('-'))
-            .join('\n'),
+    if (setupNodeStep && setupNodeStep.with) {
+      Object.assign(setupNodeStep.with, {
+        // https://github.com/actions/setup-node#caching-packages-dependencies
+        'cache': this.package.packageManager,
+        'cache-dependency-path': `**/${this.package.lockFile}`,
       })
     }
 
-    this.nodeModulesCacheBootstrapStep = nodeModulesCacheBootstrapStep
+    this.setupNodeStep = setupNodeStep
 
     this.pathMapping = options.pathMapping ?? false
     this.projectReferences = options.projectReferences ?? false
@@ -372,7 +358,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             name: 'Checkout',
             uses: 'actions/checkout@v2',
           },
-          this.nodeModulesCacheBootstrapStep,
+          this.setupNodeStep,
           nodeModulesCacheStep,
           turboCacheStep,
           {
