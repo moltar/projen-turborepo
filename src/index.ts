@@ -4,8 +4,6 @@ import { JobPermission, JobStep } from 'projen/lib/github/workflows-model'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { pathsToModuleNameMapper } from 'ts-jest'
 
-const TURBO_CACHE_DIR = './node_modules/.cache/turbo'
-
 export interface TurborepoPipelineConfig {
   /**
    * The list of tasks that this task depends on.
@@ -292,8 +290,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       })
     }
 
-    // Adds npm install as the last step to the built-in build job, so that we cache the deps
-    // for future steps.
     if (this.parallelWorkflows) {
       const matrixScopeKey = 'scope'
       const matrixScope = exp(`matrix.${matrixScopeKey}`)
@@ -310,7 +306,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           this.setupNodeStep,
           {
             name: 'Build',
-            run: `npx turbo run build --scope=${matrixScope} --include-dependencies --cache-dir="${TURBO_CACHE_DIR}"`,
+            run: `npx turbo run build --scope=${matrixScope} --include-dependencies`,
           },
         ],
         strategy: {

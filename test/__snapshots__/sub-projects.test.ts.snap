@@ -79,7 +79,6 @@ jobs:
           cache-dependency-path: \\"**/yarn.lock\\"
       - name: Build
         run: npx turbo run build --scope=\${{ matrix.scope }} --include-dependencies
-          --cache-dir=\\"./node_modules/.cache/turbo\\"
     strategy:
       fail-fast: true
       matrix:
