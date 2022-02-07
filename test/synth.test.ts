@@ -11,7 +11,6 @@ describe('TurborepoProject', () => {
     expect(synth['package.json'].devDependencies).toHaveProperty('turbo')
   })
 
-
   it('should add itself as a development dependency', () => {
     expect.assertions(1)
 
@@ -19,6 +18,15 @@ describe('TurborepoProject', () => {
     const synth = synthProjectSnapshot(project)
 
     expect(synth['package.json'].devDependencies).toHaveProperty('projen-turborepo')
+  })
+
+  it('should add packageManager prop', () => {
+    expect.assertions(1)
+
+    const project = createProject()
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['package.json'].packageManager).toBe('yarn')
   })
 
   it('should set root package as private', () => {
