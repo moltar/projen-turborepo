@@ -256,6 +256,15 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     //
     // The following removes the compile task (`tsc --build`) from the root project.
     this.compileTask.reset()
+
+    /**
+     * Adds a fake file into dist, so that artifacts download does not fail.
+     *
+     *  > Error: Unable to find any artifacts for the associated workflow
+    */
+    new JsonFile(this, 'dist/fake.json', {
+      obj: {},
+    })
   }
 
   private get subProjects(): Project[] {
