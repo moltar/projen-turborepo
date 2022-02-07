@@ -300,7 +300,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   }
 
   private turboRunTask(name: string): Task {
-    return new Task(name, {
+    return this.addTask(`turbo:${name}`, {
       description: `Runs ${name} in all sub-projects via turbo.`,
       exec: `turbo run ${name}`,
     })

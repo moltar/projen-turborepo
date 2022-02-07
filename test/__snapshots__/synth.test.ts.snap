@@ -2,37 +2,271 @@
 
 exports[`TurborepoProject should add turbo runs commands 1`] = `
 Object {
-  "description": "Only compile",
-  "name": "compile",
-}
-`;
-
-exports[`TurborepoProject should add turbo runs commands 2`] = `
-Object {
-  "description": "Runs after successful compilation",
-  "name": "post-compile",
-  "steps": Array [
-    Object {
-      "spawn": "compile",
+  "build": Object {
+    "description": "Full release build",
+    "name": "build",
+    "steps": Array [
+      Object {
+        "spawn": "default",
+      },
+      Object {
+        "spawn": "pre-compile",
+      },
+      Object {
+        "spawn": "compile",
+      },
+      Object {
+        "spawn": "post-compile",
+      },
+      Object {
+        "spawn": "test",
+      },
+      Object {
+        "spawn": "package",
+      },
+    ],
+  },
+  "bump": Object {
+    "condition": "! git log --oneline -1 | grep -q \\"chore(release):\\"",
+    "description": "Bumps version based on latest git tag and generates a changelog entry",
+    "env": Object {
+      "BUMPFILE": "dist/version.txt",
+      "CHANGELOG": "dist/changelog.md",
+      "OUTFILE": "package.json",
+      "RELEASETAG": "dist/releasetag.txt",
     },
-    Object {
-      "spawn": "build",
+    "name": "bump",
+    "steps": Array [
+      Object {
+        "builtin": "release/bump-version",
+      },
+    ],
+  },
+  "compile": Object {
+    "description": "Only compile",
+    "name": "compile",
+  },
+  "default": Object {
+    "description": "Synthesize project files",
+    "name": "default",
+    "steps": Array [
+      Object {
+        "exec": "node .projenrc.js",
+      },
+    ],
+  },
+  "eject": Object {
+    "description": "Remove projen from the project",
+    "env": Object {
+      "PROJEN_EJECTING": "true",
     },
-  ],
-}
-`;
-
-exports[`TurborepoProject should add turbo runs commands 3`] = `
-Object {
-  "description": "Run tests",
-  "name": "test",
-  "steps": Array [
-    Object {
-      "spawn": "test",
+    "name": "eject",
+    "steps": Array [
+      Object {
+        "spawn": "default",
+      },
+    ],
+  },
+  "eslint": Object {
+    "description": "Runs eslint against the codebase",
+    "name": "eslint",
+    "steps": Array [
+      Object {
+        "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools .projenrc.js",
+      },
+    ],
+  },
+  "package": Object {
+    "description": "Creates the distribution package",
+    "name": "package",
+  },
+  "post-compile": Object {
+    "description": "Runs after successful compilation",
+    "name": "post-compile",
+    "steps": Array [
+      Object {
+        "spawn": "turbo:compile",
+      },
+      Object {
+        "spawn": "turbo:build",
+      },
+    ],
+  },
+  "post-upgrade": Object {
+    "description": "Runs after upgrading dependencies",
+    "name": "post-upgrade",
+  },
+  "pre-compile": Object {
+    "description": "Prepare the project for compilation",
+    "name": "pre-compile",
+  },
+  "release": Object {
+    "description": "Prepare a release from \\"master\\" branch",
+    "env": Object {
+      "RELEASE": "true",
     },
-    Object {
-      "spawn": "eslint",
+    "name": "release",
+    "steps": Array [
+      Object {
+        "exec": "rm -fr dist",
+      },
+      Object {
+        "spawn": "bump",
+      },
+      Object {
+        "spawn": "build",
+      },
+      Object {
+        "spawn": "unbump",
+      },
+      Object {
+        "exec": "git diff --ignore-space-at-eol --exit-code",
+      },
+    ],
+  },
+  "test": Object {
+    "description": "Run tests",
+    "name": "test",
+    "steps": Array [
+      Object {
+        "spawn": "turbo:test",
+      },
+      Object {
+        "spawn": "turbo:eslint",
+      },
+    ],
+  },
+  "turbo:build": Object {
+    "description": "Runs build in all sub-projects via turbo.",
+    "name": "turbo:build",
+    "steps": Array [
+      Object {
+        "exec": "turbo run build",
+      },
+    ],
+  },
+  "turbo:compile": Object {
+    "description": "Runs compile in all sub-projects via turbo.",
+    "name": "turbo:compile",
+    "steps": Array [
+      Object {
+        "exec": "turbo run compile",
+      },
+    ],
+  },
+  "turbo:eslint": Object {
+    "description": "Runs eslint in all sub-projects via turbo.",
+    "name": "turbo:eslint",
+    "steps": Array [
+      Object {
+        "exec": "turbo run eslint",
+      },
+    ],
+  },
+  "turbo:test": Object {
+    "description": "Runs test in all sub-projects via turbo.",
+    "name": "turbo:test",
+    "steps": Array [
+      Object {
+        "exec": "turbo run test",
+      },
+    ],
+  },
+  "unbump": Object {
+    "description": "Restores version to 0.0.0",
+    "env": Object {
+      "BUMPFILE": "dist/version.txt",
+      "CHANGELOG": "dist/changelog.md",
+      "OUTFILE": "package.json",
+      "RELEASETAG": "dist/releasetag.txt",
     },
-  ],
+    "name": "unbump",
+    "steps": Array [
+      Object {
+        "builtin": "release/reset-version",
+      },
+    ],
+  },
+  "upgrade": Object {
+    "description": "upgrade dependencies",
+    "env": Object {
+      "CI": "0",
+    },
+    "name": "upgrade",
+    "steps": Array [
+      Object {
+        "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='projen'",
+      },
+      Object {
+        "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='projen'",
+      },
+      Object {
+        "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='projen'",
+      },
+      Object {
+        "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='projen'",
+      },
+      Object {
+        "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='projen'",
+      },
+      Object {
+        "exec": "yarn install --check-files",
+      },
+      Object {
+        "exec": "yarn upgrade @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint json-schema npm-check-updates projen-turborepo standard-version turbo typescript",
+      },
+      Object {
+        "exec": "npx projen",
+      },
+      Object {
+        "spawn": "post-upgrade",
+      },
+    ],
+  },
+  "upgrade-projen": Object {
+    "description": "upgrade projen",
+    "env": Object {
+      "CI": "0",
+    },
+    "name": "upgrade-projen",
+    "steps": Array [
+      Object {
+        "exec": "npm-check-updates --dep dev --upgrade --target=minor --filter='projen'",
+      },
+      Object {
+        "exec": "npm-check-updates --dep optional --upgrade --target=minor --filter='projen'",
+      },
+      Object {
+        "exec": "npm-check-updates --dep peer --upgrade --target=minor --filter='projen'",
+      },
+      Object {
+        "exec": "npm-check-updates --dep prod --upgrade --target=minor --filter='projen'",
+      },
+      Object {
+        "exec": "npm-check-updates --dep bundle --upgrade --target=minor --filter='projen'",
+      },
+      Object {
+        "exec": "yarn install --check-files",
+      },
+      Object {
+        "exec": "yarn upgrade projen",
+      },
+      Object {
+        "exec": "npx projen",
+      },
+      Object {
+        "spawn": "post-upgrade",
+      },
+    ],
+  },
+  "watch": Object {
+    "description": "Watch & compile in the background",
+    "name": "watch",
+    "steps": Array [
+      Object {
+        "exec": "tsc --build -w",
+      },
+    ],
+  },
 }
 `;
