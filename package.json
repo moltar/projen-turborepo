@@ -62,8 +62,11 @@
     "projen": "^0.52.15"
   },
   "dependencies": {
-    "ts-jest": "^27.1.3"
+    "dotalias": "^0.0.5"
   },
+  "bundledDependencies": [
+    "dotalias"
+  ],
   "keywords": [
     "monorepo",
     "projen",

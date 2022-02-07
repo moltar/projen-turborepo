@@ -1,7 +1,7 @@
 import * as path from 'path'
+import { toJestConfig } from 'dotalias/lib/converters/toJestConfig'
 import { typescript, Project, javascript, JsonFile } from 'projen'
 import { JobPermission, JobStep } from 'projen/lib/github/workflows-model'
-import { pathsToModuleNameMapper } from 'ts-jest'
 
 export interface TurborepoPipelineConfig {
   /**
@@ -365,15 +365,24 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         }
 
         if (this.jestModuleNameMapper && depProjects.length > 0 && subProject.jest) {
-          const pathsToModuleNameMappings: Record<string, string[]> = {}
+          const pathsToModuleNameMappings: Record<string, string> = {}
           for (const [moduleName, modulePath] of Object.entries(pathMappings)) {
-            pathsToModuleNameMappings[moduleName] = [[modulePath, 'src'].join('/')]
+            pathsToModuleNameMappings[moduleName] = [modulePath, 'src'].join('/')
+          }
+
+          // TODO: Revisit and refactor
+          // temporary workaround for: https://github.com/open-draft/dotalias/issues/5
+          const { moduleNameMapper }= toJestConfig(pathsToModuleNameMappings)
+          for (const [key, val] of Object.entries(moduleNameMapper)) {
+            if (typeof val === 'string' && val.startsWith('<rootDir>') === false) {
+              moduleNameMapper[key] = ['<rootDir>', val].join('/')
+            }
           }
 
           Object.assign(subProject.jest.config, {
             moduleNameMapper: {
               ...subProject.jest.config?.moduleNameMapper,
-              ...pathsToModuleNameMapper(pathsToModuleNameMappings, { prefix: '<rootDir>' }),
+              ...moduleNameMapper,
             },
           })
         }
