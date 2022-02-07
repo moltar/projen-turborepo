@@ -34,6 +34,7 @@ const project = new cdk.JsiiProject({
     projen,
   ],
   releaseToNpm: true,
+  depsUpgrade: false,
 })
 
 project.eslint?.addRules({
