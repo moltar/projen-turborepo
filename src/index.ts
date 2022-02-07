@@ -139,6 +139,18 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
 
 const exp = (val: string) => ['${{', val, '}}'].join(' ')
 
+// An auth token to ensure that your code interacting with the local server.
+// Hope this is secure enough?
+// TODO: verify!
+const TURBO_CACHE_SERVER_TOKEN = exp('env.RUNNER_TEMP')
+
+/**
+ * API server that runs within GitHub Actions
+ *
+ * @see https://github.com/felixmosh/turborepo-gh-artifacts#setup
+ */
+const TURBO_CACHE_SERVER_API = 'http://127.0.0.1:9080'
+
 export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly pathMapping: boolean
   private readonly projectReferences: boolean
@@ -152,6 +164,15 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       with: {},
     }
 
+    const turboCacheStep: JobStep = {
+      name: 'Setup turbo cache',
+      uses: 'felixmosh/turborepo-gh-artifacts@v1',
+      with: {
+        'repo-token': exp('secrets.GITHUB_TOKEN'),
+        'server-token': TURBO_CACHE_SERVER_TOKEN,
+      },
+    }
+
     super({
       ...options,
       jest: false,
@@ -159,6 +180,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       package: false,
       workflowBootstrapSteps: [
         setupNodeStep,
+        turboCacheStep,
       ],
     })
 
@@ -324,7 +346,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           ...this.renderWorkflowSetup({ mutable: false }),
           {
             name: 'Build',
-            run: `npx turbo run build --scope=${matrixScope} --include-dependencies`,
+            run: `npx turbo run build --api="${TURBO_CACHE_SERVER_API}" --token="${TURBO_CACHE_SERVER_TOKEN}" --team="${exp('env.GITHUB_REPOSITORY_OWNER')}" --scope="${matrixScope}" --include-dependencies`,
           },
         ],
         strategy: {
