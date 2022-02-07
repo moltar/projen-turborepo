@@ -140,9 +140,7 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
 const exp = (val: string) => ['${{', val, '}}'].join(' ')
 
 // An auth token to ensure that your code interacting with the local server.
-// Hope this is secure enough?
-// TODO: verify!
-const TURBO_CACHE_SERVER_TOKEN = exp('env.RUNNER_TEMP')
+const TURBO_CACHE_SERVER_TOKEN = exp('github.path')
 
 /**
  * API server that runs within GitHub Actions
@@ -339,7 +337,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           ...this.renderWorkflowSetup({ mutable: false }),
           {
             name: 'Build',
-            run: `npx turbo run build --api="${TURBO_CACHE_SERVER_API}" --token="${TURBO_CACHE_SERVER_TOKEN}" --team="${exp('env.GITHUB_REPOSITORY_OWNER')}" --scope="${matrixScope}" --include-dependencies`,
+            run: `npx turbo run build --api="${TURBO_CACHE_SERVER_API}" --token="${TURBO_CACHE_SERVER_TOKEN}" --team="${exp('github.repository_owner')}" --scope="${matrixScope}" --include-dependencies`,
           },
         ],
         strategy: {
