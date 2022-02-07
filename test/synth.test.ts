@@ -29,14 +29,16 @@ describe('TurborepoProject', () => {
     expect(synth['package.json'].private).toBe(true)
   })
 
-
-  it('should add turbo to build command', () => {
-    expect.assertions(1)
+  it('should add turbo runs commands', () => {
+    expect.assertions(3)
 
     const project = createProject()
     const synth = synthProjectSnapshot(project)
+    const tasks: Record<string, unknown> = synth['.projen/tasks.json'].tasks
 
-    expect(synth['.projen/tasks.json'].tasks.compile).toMatchSnapshot()
+    expect(tasks.compile).toMatchSnapshot()
+    expect(tasks['post-compile']).toMatchSnapshot()
+    expect(tasks.test).toMatchSnapshot()
   })
 
   it('should create turbo config', () => {

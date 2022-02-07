@@ -1,6 +1,6 @@
 import * as path from 'path'
 import { toJestConfig } from 'dotalias/lib/converters/toJestConfig'
-import { typescript, Project, javascript, JsonFile } from 'projen'
+import { typescript, Project, javascript, JsonFile, Task } from 'projen'
 import { JobPermission, JobStep } from 'projen/lib/github/workflows-model'
 
 export interface TurborepoPipelineConfig {
@@ -273,9 +273,13 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     this.compileTask.reset()
 
     /**
-     * Runs compile via turbo.
+     * Turbo runs.
     */
-    this.compileTask.exec('turbo run compile')
+    this.postCompileTask.prependSpawn(this.turboRunTask('compile'))
+    this.postCompileTask.spawn(this.turboRunTask('build'))
+    this.testTask.reset() // removes root eslint
+    this.testTask.spawn(this.turboRunTask('test'))
+    this.testTask.spawn(this.turboRunTask('eslint'))
 
     /**
      * Adds a fake file into dist, so that artifacts download does not fail.
@@ -293,6 +297,13 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     const subProjects: Project[] = this.subprojects || []
 
     return subProjects.sort((a, b) => a.name.localeCompare(b.name))
+  }
+
+  private turboRunTask(name: string): Task {
+    return new Task(name, {
+      description: `Runs ${name} in all sub-projects via turbo.`,
+      exec: `turbo run ${name}`,
+    })
   }
 
   preSynthesize() {

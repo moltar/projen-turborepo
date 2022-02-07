@@ -1,12 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TurborepoProject should add turbo to build command 1`] = `
+exports[`TurborepoProject should add turbo runs commands 1`] = `
 Object {
   "description": "Only compile",
   "name": "compile",
+}
+`;
+
+exports[`TurborepoProject should add turbo runs commands 2`] = `
+Object {
+  "description": "Runs after successful compilation",
+  "name": "post-compile",
   "steps": Array [
     Object {
-      "exec": "turbo run compile",
+      "spawn": "compile",
+    },
+    Object {
+      "spawn": "build",
+    },
+  ],
+}
+`;
+
+exports[`TurborepoProject should add turbo runs commands 3`] = `
+Object {
+  "description": "Run tests",
+  "name": "test",
+  "steps": Array [
+    Object {
+      "spawn": "test",
+    },
+    Object {
+      "spawn": "eslint",
     },
   ],
 }
