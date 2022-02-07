@@ -14,6 +14,11 @@ $> npx projen new --from projen-turborepo --projenrc-ts
 ...
 ```
 
+## Demo
+
+See [`projen-turborepo-test`](https://github.com/moltar/projen-turborepo-test) GitHub repo for
+a demo project.
+
 ## Example
 
 ```ts
