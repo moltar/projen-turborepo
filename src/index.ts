@@ -189,11 +189,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     this.addDevDeps('turbo')
 
     /**
-     * Turborepo cache directory.
-    */
-    this.gitignore.addPatterns('.turbo')
-
-    /**
      * Finally, turborepo config.
      *
      * @see https://turborepo.org/docs/reference/configuration

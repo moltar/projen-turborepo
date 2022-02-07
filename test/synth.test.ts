@@ -2,16 +2,6 @@ import { javascript } from 'projen'
 import { synthProjectSnapshot, createProject } from './util'
 
 describe('TurborepoProject', () => {
-  it('should include turbo cache dir in .gitignore', () => {
-    expect.assertions(1)
-
-    const project = createProject()
-    const synth = synthProjectSnapshot(project)
-    const gitignore = synth['.gitignore'].split('\n')
-
-    expect(gitignore).toContain('.turbo')
-  })
-
   it('should add turborepo package as a development dependency', () => {
     expect.assertions(1)
 
