@@ -140,7 +140,7 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
 const exp = (val: string) => ['${{', val, '}}'].join(' ')
 
 // An auth token to ensure that your code interacting with the local server.
-const TURBO_CACHE_SERVER_TOKEN = '54db2817-4e5b-4ad7-bc55-29ad818f363b'
+const TURBO_CACHE_SERVER_TOKEN = exp('github.sha')
 
 /**
  * API server that runs within GitHub Actions
