@@ -203,7 +203,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
      */
     const outputs = ['build', 'dist', 'lib', 'storybook-static'].sort().map((dir) => `${dir}/**`)
     const turbo: TurborepoConfigInternal = {
-      npmClient: options.packageManager,
+      npmClient: this.package.packageManager,
 
       // TODO: Cannot get the value set in the projenrc file.
       // @see https://github.com/projen/projen/issues/1427

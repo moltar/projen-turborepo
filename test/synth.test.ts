@@ -45,6 +45,7 @@ describe('TurborepoProject', () => {
 
     const turbo = {
       baseBranch: 'origin/main',
+      npmClient: 'yarn',
       pipeline: {
         dev: {
           cache: false,
