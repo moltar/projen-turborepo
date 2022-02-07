@@ -232,7 +232,10 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         ...options.turbo?.pipeline,
       },
     }
-    this.package.addField('turbo', turbo)
+
+    new JsonFile(this, 'turbo.json', {
+      obj: turbo,
+    })
 
     /**
      * Monorepo root package is always private!
