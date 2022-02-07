@@ -248,6 +248,12 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         tsconfig?.file.addOverride('compilerOptions.composite', true)
       }
     }
+
+    // Root project by default includes a single entry `src/**/*.ts`, which then trips up with:
+    //
+    //  > error TS18003: No inputs were found in config file '.../tsconfig.json'.
+    //  > Specified 'include' paths were '["src/**/*.ts"]' and 'exclude' paths were '[]'.
+    this.tsconfig?.file.addOverride('include', [])
   }
 
   private get subProjects(): Project[] {

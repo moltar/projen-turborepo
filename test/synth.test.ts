@@ -110,4 +110,13 @@ describe('TurborepoProject', () => {
     expect(synth['src/index.ts']).toBeUndefined()
     expect(synth['test/hello.test.ts']).toBeUndefined()
   })
+
+  it('projen project should not include any source files', () => {
+    expect.assertions(1)
+
+    const project = createProject()
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['tsconfig.json'].include).toStrictEqual([])
+  })
 })
