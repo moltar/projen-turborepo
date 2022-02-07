@@ -110,4 +110,15 @@ describe('TurborepoProject', () => {
     expect(synth['src/index.ts']).toBeUndefined()
     expect(synth['test/hello.test.ts']).toBeUndefined()
   })
+
+  it('should not run compile in the root project', () => {
+    expect.assertions(1)
+
+    const project = createProject()
+    const synth = synthProjectSnapshot(project)
+
+    console.log(synth['.projen/tasks.json'])
+
+    expect(synth['.projen/tasks.json'].compile).toBeUndefined()
+  })
 })
