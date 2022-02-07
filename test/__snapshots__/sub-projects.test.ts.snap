@@ -73,6 +73,8 @@ jobs:
         with:
           cache: yarn
           cache-dependency-path: \\"**/yarn.lock\\"
+      - name: Install dependencies
+        run: yarn install --check-files --frozen-lockfile
       - name: Build
         run: npx turbo run build --scope=\${{ matrix.scope }} --include-dependencies
     strategy:
