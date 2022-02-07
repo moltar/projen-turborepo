@@ -29,6 +29,16 @@ describe('TurborepoProject', () => {
     expect(synth['package.json'].private).toBe(true)
   })
 
+
+  it('should add turbo to build command', () => {
+    expect.assertions(1)
+
+    const project = createProject()
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['.projen/tasks.json'].tasks.compile).toMatchSnapshot()
+  })
+
   it('should create turbo config', () => {
     expect.assertions(1)
 

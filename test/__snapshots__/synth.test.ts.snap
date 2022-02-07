@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TurborepoProject should add turbo to build command 1`] = `
+Object {
+  "description": "Only compile",
+  "name": "compile",
+  "steps": Array [
+    Object {
+      "exec": "turbo run compile",
+    },
+  ],
+}
+`;

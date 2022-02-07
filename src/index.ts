@@ -273,6 +273,11 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     this.compileTask.reset()
 
     /**
+     * Runs compile via turbo.
+    */
+    this.compileTask.exec('turbo run compile')
+
+    /**
      * Adds a fake file into dist, so that artifacts download does not fail.
      *
      *  > Error: Unable to find any artifacts for the associated workflow
