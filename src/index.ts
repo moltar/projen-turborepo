@@ -211,13 +211,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     this.addDevDeps('turbo')
 
     /**
-     * Adds package manager to prevent turbo warnings
-     *
-     * @see https://turborepo.org/docs/reference/codemods#turborepo-1x
-    */
-    this.package.addField('packageManager', this.package.packageManager)
-
-    /**
      * Finally, turborepo config.
      *
      * @see https://turborepo.org/docs/reference/configuration
