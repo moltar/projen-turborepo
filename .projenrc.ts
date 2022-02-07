@@ -32,6 +32,7 @@ const project = new cdk.JsiiProject({
   ],
   devDeps: [
     projen,
+    'turbo@latest',
   ],
   releaseToNpm: true,
   depsUpgrade: false,

@@ -81,6 +81,11 @@
       "type": "build"
     },
     {
+      "name": "turbo",
+      "version": "latest",
+      "type": "build"
+    },
+    {
       "name": "typescript",
       "type": "build"
     },
