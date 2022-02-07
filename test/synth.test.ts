@@ -117,8 +117,6 @@ describe('TurborepoProject', () => {
     const project = createProject()
     const synth = synthProjectSnapshot(project)
 
-    console.log(synth['.projen/tasks.json'])
-
     expect(synth['.projen/tasks.json'].compile).toBeUndefined()
   })
 })
