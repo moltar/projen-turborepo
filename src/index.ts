@@ -285,6 +285,8 @@ export class TurborepoProject extends typescript.TypeScriptProject {
      * Adds a fake file into dist, so that artifacts download does not fail.
      *
      *  > Error: Unable to find any artifacts for the associated workflow
+     *
+     * @see https://github.com/projen/projen/issues/1600
     */
     new JsonFile(this, 'dist/fake.json', {
       obj: {},
