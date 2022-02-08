@@ -143,6 +143,32 @@ describe('TurborepoProject', () => {
     })
   })
 
+  it('should have no build job in root for when parallelWorkflows are on', () => {
+    expect.assertions(1)
+
+    const project = createProject({
+      parallelWorkflows: true,
+      mutableBuild: false,
+    })
+
+    const subProjectBarDir = 'packages/bar'
+    const subProjectBar = createSubProject({
+      parent: project,
+      outdir: subProjectBarDir,
+    })
+
+    const subProjectBazDir = 'packages/baz'
+    createSubProject({
+      parent: project,
+      outdir: subProjectBazDir,
+      deps: [subProjectBar.package.packageName],
+    })
+
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['.github/workflows/build.yml']).toMatchSnapshot()
+  })
+
   it('should have one build job in root for when parallelWorkflows are off', () => {
     expect.assertions(1)
 
