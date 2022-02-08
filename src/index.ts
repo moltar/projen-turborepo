@@ -273,13 +273,17 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     this.compileTask.reset()
 
     /**
-     * Turbo runs.
+     * Removes ESLint task from the root project
     */
-    this.postCompileTask.prependSpawn(this.turboRunTask('compile'))
-    this.postCompileTask.spawn(this.turboRunTask('build'))
-    this.testTask.reset() // removes root eslint
-    this.testTask.spawn(this.turboRunTask('test'))
-    this.testTask.spawn(this.turboRunTask('eslint'))
+    this.testTask.reset()
+
+    /**
+     * turbo:* commands
+    */
+    this.turboRunTask('compile')
+    this.turboRunTask('build')
+    this.turboRunTask('test')
+    this.turboRunTask('eslint')
 
     /**
      * Adds a fake file into dist, so that artifacts download does not fail.

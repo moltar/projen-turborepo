@@ -83,14 +83,6 @@ Object {
   "post-compile": Object {
     "description": "Runs after successful compilation",
     "name": "post-compile",
-    "steps": Array [
-      Object {
-        "spawn": "turbo:compile",
-      },
-      Object {
-        "spawn": "turbo:build",
-      },
-    ],
   },
   "post-upgrade": Object {
     "description": "Runs after upgrading dependencies",
@@ -127,14 +119,6 @@ Object {
   "test": Object {
     "description": "Run tests",
     "name": "test",
-    "steps": Array [
-      Object {
-        "spawn": "turbo:test",
-      },
-      Object {
-        "spawn": "turbo:eslint",
-      },
-    ],
   },
   "turbo:build": Object {
     "description": "Runs build in all sub-projects via turbo.",
