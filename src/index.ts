@@ -158,9 +158,11 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly turboCacheJobStep: JobStep
 
   constructor(options: TurborepoProjectOptions) {
+    // Matches internal job step
+    // https://github.com/projen/projen/blob/98b1abc07335bbad3384484591344e6f7dffc70c/src/javascript/node-project.ts#L860-L862
     const setupNodeStep: JobStep = {
-      name: 'Setup node',
-      uses: 'actions/setup-node@v2',
+      name: 'Setup Node.js',
+      uses: 'actions/setup-node@v2.2.0',
       with: {},
     }
 

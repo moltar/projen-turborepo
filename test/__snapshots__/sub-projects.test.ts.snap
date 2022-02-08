@@ -22,8 +22,8 @@ jobs:
         with:
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
-      - name: Setup node
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.2.0
         with:
           cache: yarn
           cache-dependency-path: \\"**/yarn.lock\\"
@@ -73,8 +73,8 @@ jobs:
         with:
           repo-token: \${{ secrets.GITHUB_TOKEN }}
           server-token: \${{ github.sha }}
-      - name: Setup node
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.2.0
         with:
           cache: yarn
           cache-dependency-path: \\"**/yarn.lock\\"
@@ -113,8 +113,8 @@ jobs:
         with:
           ref: \${{ github.event.pull_request.head.ref }}
           repository: \${{ github.event.pull_request.head.repo.full_name }}
-      - name: Setup node
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.2.0
         with:
           cache: yarn
           cache-dependency-path: \\"**/yarn.lock\\"
