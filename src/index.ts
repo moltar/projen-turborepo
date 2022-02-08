@@ -155,6 +155,8 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly jestModuleNameMapper: boolean
   private readonly parallelWorkflows: boolean
 
+  private readonly turboCacheJobStep: JobStep
+
   constructor(options: TurborepoProjectOptions) {
     const setupNodeStep: JobStep = {
       name: 'Setup node',
@@ -178,9 +180,11 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       package: false,
       workflowBootstrapSteps: [
         setupNodeStep,
-        turboCacheStep,
+        ...[options.parallelWorkflows ? undefined : turboCacheStep],
       ],
     })
+
+    this.turboCacheJobStep = turboCacheStep
 
     // Because we do not know the value of `this.package.lockFile` before super, we cannot
     // add the cache key which uses the lockfile name, we add it later
@@ -359,6 +363,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             name: 'Checkout',
             uses: 'actions/checkout@v2',
           },
+          this.turboCacheJobStep,
           ...this.renderWorkflowSetup({ mutable: false }),
           {
             name: 'Build',
