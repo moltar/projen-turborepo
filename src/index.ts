@@ -375,21 +375,9 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         },
       })
     } else {
-      this.buildWorkflow?.addPostBuildJob('turbo', {
-        name: 'build',
-        runsOn: ['ubuntu-latest'],
-        permissions: { contents: JobPermission.READ },
-        steps: [
-          {
-            name: 'Checkout',
-            uses: 'actions/checkout@v2',
-          },
-          ...this.renderWorkflowSetup({ mutable: false }),
-          {
-            name: 'Build',
-            run: turboBuildCommand,
-          },
-        ],
+      this.buildWorkflow?.addPostBuildSteps({
+        name: 'turbo run build',
+        run: turboBuildCommand,
       })
     }
 
