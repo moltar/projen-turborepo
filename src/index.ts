@@ -343,6 +343,9 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       })
     }
 
+
+    const turboBuildCommand = `npx turbo run build --api="${TURBO_CACHE_SERVER_API}" --token="${TURBO_CACHE_SERVER_TOKEN}" --team="${exp('github.repository_owner')}"`
+
     if (this.parallelWorkflows) {
       const matrixScopeKey = 'scope'
       const matrixScope = exp(`matrix.${matrixScopeKey}`)
@@ -359,7 +362,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           ...this.renderWorkflowSetup({ mutable: false }),
           {
             name: 'Build',
-            run: `npx turbo run build --api="${TURBO_CACHE_SERVER_API}" --token="${TURBO_CACHE_SERVER_TOKEN}" --team="${exp('github.repository_owner')}" --scope="${matrixScope}" --include-dependencies`,
+            run: `${turboBuildCommand} --scope="${matrixScope}" --include-dependencies`,
           },
         ],
         strategy: {
@@ -370,6 +373,23 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             },
           },
         },
+      })
+    } else {
+      this.buildWorkflow?.addPostBuildJob('turbo', {
+        name: 'build',
+        runsOn: ['ubuntu-latest'],
+        permissions: { contents: JobPermission.READ },
+        steps: [
+          {
+            name: 'Checkout',
+            uses: 'actions/checkout@v2',
+          },
+          ...this.renderWorkflowSetup({ mutable: false }),
+          {
+            name: 'Build',
+            run: turboBuildCommand,
+          },
+        ],
       })
     }
 

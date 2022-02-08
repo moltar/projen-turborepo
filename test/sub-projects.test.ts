@@ -143,6 +143,18 @@ describe('TurborepoProject', () => {
     })
   })
 
+  it('should have one build job in root for when parallelWorkflows are off', () => {
+    expect.assertions(1)
+
+    const project = createProject({
+      parallelWorkflows: false,
+      mutableBuild: false,
+    })
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['.github/workflows/build.yml']).toMatchSnapshot()
+  })
+
   describe('for each sub-project', () => {
     const project = createProject({
       parallelWorkflows: true,
