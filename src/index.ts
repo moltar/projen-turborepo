@@ -68,7 +68,7 @@ export interface TurborepoConfig {
   readonly pipeline?: Record<string, TurborepoPipelineConfig>;
 }
 
-interface TurborepoConfigInternal extends TurborepoConfig{
+interface TurborepoConfigInternal extends TurborepoConfig {
   /**
    * The base branch or your git repository.
    * Git is used by turbo in its hashing algorithm and `--since` CLI flag.
