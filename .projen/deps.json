@@ -10,6 +10,10 @@
       "type": "build"
     },
     {
+      "name": "@types/yaml",
+      "type": "build"
+    },
+    {
       "name": "@typescript-eslint/eslint-plugin",
       "version": "^5",
       "type": "build"
@@ -87,6 +91,10 @@
     },
     {
       "name": "typescript",
+      "type": "build"
+    },
+    {
+      "name": "yaml",
       "type": "build"
     },
     {
