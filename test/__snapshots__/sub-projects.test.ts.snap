@@ -58,6 +58,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
+      actions: read
       contents: read
     if: \\"! needs.build.outputs.self_mutation_happened\\"
     steps:
@@ -127,8 +128,6 @@ jobs:
         run: yarn install --check-files
       - name: build
         run: npx projen build
-      - name: turbo run build
-        run: npx turbo run build --api=\\"http://127.0.0.1:9080\\" --token=\\"\${{ github.sha }}\\" --team=\\"\${{ github.repository_owner }}\\"
       - id: self_mutation
         name: Find mutations
         run: |-
@@ -146,5 +145,46 @@ jobs:
           echo \\"::error::Files were changed during build (see build log). If this was triggered from a fork, you will need to update your branch.\\"
           cat .repo.patch
           exit 1
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2.1.1
+        with:
+          name: build-artifact
+          path: dist
+  turbo:
+    name: build
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    if: \\"! needs.build.outputs.self_mutation_happened\\"
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: dist
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup turbo cache
+        uses: felixmosh/turborepo-gh-artifacts@v1
+        with:
+          repo-token: \${{ secrets.GITHUB_TOKEN }}
+          server-token: \${{ github.sha }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          cache: yarn
+          cache-dependency-path: \\"**/yarn.lock\\"
+      - name: Setup turbo cache
+        uses: felixmosh/turborepo-gh-artifacts@v1
+        with:
+          repo-token: \${{ secrets.GITHUB_TOKEN }}
+          server-token: \${{ github.sha }}
+      - name: Install dependencies
+        run: yarn install --check-files --frozen-lockfile
+      - name: Build
+        run: npx turbo run build --api=\\"http://127.0.0.1:9080\\" --token=\\"\${{ github.sha }}\\" --team=\\"\${{ github.repository_owner }}\\"
+    strategy: {}
 "
 `;

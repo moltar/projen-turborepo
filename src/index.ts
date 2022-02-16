@@ -351,42 +351,43 @@ export class TurborepoProject extends typescript.TypeScriptProject {
 
 
     const turboBuildCommand = `npx turbo run build --api="${TURBO_CACHE_SERVER_API}" --token="${TURBO_CACHE_SERVER_TOKEN}" --team="${exp('github.repository_owner')}"`
+    const matrixScopeKey = 'scope'
+    const matrixScope = exp(`matrix.${matrixScopeKey}`)
 
-    if (this.parallelWorkflows) {
-      const matrixScopeKey = 'scope'
-      const matrixScope = exp(`matrix.${matrixScopeKey}`)
-
-      this.buildWorkflow?.addPostBuildJob('turbo', {
-        name: 'build',
-        runsOn: ['ubuntu-latest'],
-        permissions: { contents: JobPermission.READ },
-        steps: [
-          {
-            name: 'Checkout',
-            uses: 'actions/checkout@v2',
-          },
-          this.turboCacheJobStep,
-          ...this.renderWorkflowSetup({ mutable: false }),
-          {
-            name: 'Build',
-            run: `${turboBuildCommand} --scope="${matrixScope}" --include-dependencies`,
-          },
-        ],
-        strategy: {
+    this.buildWorkflow?.addPostBuildJob('turbo', {
+      name: 'build',
+      runsOn: ['ubuntu-latest'],
+      permissions: {
+        // Needs read permissions to be able to read artifacts
+        // See: https://github.com/felixmosh/turborepo-gh-artifacts/issues/5#issuecomment-1035869857
+        actions: JobPermission.READ,
+        contents: JobPermission.READ,
+      },
+      steps: [
+        {
+          name: 'Checkout',
+          uses: 'actions/checkout@v2',
+        },
+        this.turboCacheJobStep,
+        ...this.renderWorkflowSetup({ mutable: false }),
+        {
+          name: 'Build',
+          run: this.parallelWorkflows
+            ? `${turboBuildCommand} --scope="${matrixScope}" --include-dependencies`
+            : turboBuildCommand,
+        },
+      ],
+      strategy: this.parallelWorkflows
+        ? {
           failFast: true,
           matrix: {
             domain: {
               [matrixScopeKey]: Object.keys(packageNameSubProjectMap),
             },
           },
-        },
-      })
-    } else {
-      this.buildWorkflow?.addPostBuildSteps({
-        name: 'turbo run build',
-        run: turboBuildCommand,
-      })
-    }
+        }
+        : {},
+    })
 
     for (const subProject of subProjects) {
       const packageNames = Object.keys(packageNameSubProjectMap)

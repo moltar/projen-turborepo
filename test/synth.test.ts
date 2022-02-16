@@ -1,5 +1,5 @@
 import { javascript } from 'projen'
-import { synthProjectSnapshot, createProject } from './util'
+import { synthProjectSnapshot, createProject, parseYaml } from './util'
 
 describe('TurborepoProject', () => {
   it('should add turborepo package as a development dependency', () => {
@@ -119,5 +119,14 @@ describe('TurborepoProject', () => {
     const synth = synthProjectSnapshot(project)
 
     expect(synth['.projen/tasks.json'].compile).toBeUndefined()
+  })
+
+  it('should set actions read permissions', () => {
+    expect.assertions(1)
+
+    const project = createProject()
+    const synth = synthProjectSnapshot(project)
+
+    expect(parseYaml(synth['.github/workflows/build.yml']).jobs.turbo.permissions.actions).toBe('read')
   })
 })
