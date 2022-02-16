@@ -355,7 +355,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     const matrixScope = exp(`matrix.${matrixScopeKey}`)
 
     this.buildWorkflow?.addPostBuildJob('turbo', {
-      name: 'build',
+      name: 'turbo build',
       runsOn: ['ubuntu-latest'],
       permissions: {
         // Needs read permissions to be able to read artifacts

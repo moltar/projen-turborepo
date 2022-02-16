@@ -54,7 +54,7 @@ jobs:
           name: build-artifact
           path: dist
   turbo:
-    name: build
+    name: turbo build
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -151,7 +151,7 @@ jobs:
           name: build-artifact
           path: dist
   turbo:
-    name: build
+    name: turbo build
     needs: build
     runs-on: ubuntu-latest
     permissions:
