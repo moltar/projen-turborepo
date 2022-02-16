@@ -28,7 +28,7 @@ jobs:
           cache: yarn
           cache-dependency-path: \\"**/yarn.lock\\"
       - name: Install dependencies
-        run: yarn install --check-files
+        run: yarn install --check-files --frozen-lockfile
       - name: build
         run: npx projen build
       - id: self_mutation
@@ -125,7 +125,7 @@ jobs:
           repo-token: \${{ secrets.GITHUB_TOKEN }}
           server-token: \${{ github.sha }}
       - name: Install dependencies
-        run: yarn install --check-files
+        run: yarn install --check-files --frozen-lockfile
       - name: build
         run: npx projen build
       - id: self_mutation

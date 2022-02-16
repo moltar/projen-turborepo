@@ -3,7 +3,7 @@ import { javascript, cdk } from 'projen'
 const authorName = 'Roman Filippov'
 const authorAddress = 'rf@romanfilippov.com'
 const repository = 'https://github.com/moltar/projen-turborepo'
-const projen = 'projen@^0.52.20'
+const projen = 'projen@^0.52.31'
 
 const project = new cdk.JsiiProject({
   defaultReleaseBranch: 'master',

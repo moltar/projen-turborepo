@@ -49,7 +49,7 @@
     "jsii-diff": "^1.52.1",
     "jsii-docgen": "^4.2.44",
     "json-schema": "^0.4.0",
-    "projen": "0.52.20",
+    "projen": "0.52.31",
     "standard-version": "^9",
     "ts-jest": "^27.1.3",
     "ts-node": "^9",
@@ -58,7 +58,7 @@
     "yaml": "^2.0.0-10"
   },
   "peerDependencies": {
-    "projen": "^0.52.20"
+    "projen": "^0.52.31"
   },
   "dependencies": {
     "dotalias": "^0.0.5"
