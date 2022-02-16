@@ -186,7 +186,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`repositoryDirectory`](#projenturborepoturborepoprojectoptionspropertyrepositorydirectory) | `string` | If the package.json for your package is not in the root directory (for example if it is part of a monorepo), you can specify the directory in which it lives. |
 | [`scripts`](#projenturborepoturborepoprojectoptionspropertyscripts) | {[ key: string ]: `string`} | npm scripts to include. |
 | [`stability`](#projenturborepoturborepoprojectoptionspropertystability) | `string` | Package's Stability. |
-| [`jsiiReleaseVersion`](#projenturborepoturborepoprojectoptionspropertyjsiireleaseversion) | `string` | Version requirement of `jsii-release` which is used to publish modules to npm. |
+| [`jsiiReleaseVersion`](#projenturborepoturborepoprojectoptionspropertyjsiireleaseversion) | `string` | Version requirement of `publib` which is used to publish modules to npm. |
 | [`majorVersion`](#projenturborepoturborepoprojectoptionspropertymajorversion) | `number` | Major version to release from the default branch. |
 | [`npmDistTag`](#projenturborepoturborepoprojectoptionspropertynpmdisttag) | `string` | The npmDistTag to use when publishing from the default branch. |
 | [`postBuildSteps`](#projenturborepoturborepoprojectoptionspropertypostbuildsteps) | [`projen.github.workflows.JobStep`](#projen.github.workflows.JobStep)[] | Steps to execute after build as part of the release workflow. |
@@ -1025,7 +1025,7 @@ public readonly jsiiReleaseVersion: string;
 - *Type:* `string`
 - *Default:* "latest"
 
-Version requirement of `jsii-release` which is used to publish modules to npm.
+Version requirement of `publib` which is used to publish modules to npm.
 
 ---
 
@@ -2116,7 +2116,7 @@ new TurborepoProject(options: TurborepoProjectOptions)
 
 | **Name** | **Description** |
 | --- | --- |
-| [`preSynthesize`](#projenturborepoturborepoprojectpresynthesize) | (experimental) Called before all components are synthesized. |
+| [`preSynthesize`](#projenturborepoturborepoprojectpresynthesize) | Called before all components are synthesized. |
 
 ---
 
