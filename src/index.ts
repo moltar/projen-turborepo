@@ -155,8 +155,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly jestModuleNameMapper: boolean
   private readonly parallelWorkflows: boolean
 
-  private readonly turboCacheJobStep: JobStep
-
   constructor(options: TurborepoProjectOptions) {
     // Matches internal job step
     // https://github.com/projen/projen/blob/98b1abc07335bbad3384484591344e6f7dffc70c/src/javascript/node-project.ts#L860-L862
@@ -166,15 +164,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       with: {},
     }
 
-    const turboCacheStep: JobStep = {
-      name: 'Setup turbo cache',
-      uses: 'felixmosh/turborepo-gh-artifacts@v1',
-      with: {
-        'repo-token': exp('secrets.GITHUB_TOKEN'),
-        'server-token': TURBO_CACHE_SERVER_TOKEN,
-      },
-    }
-
     super({
       ...options,
       jest: false,
@@ -182,11 +171,8 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       package: false,
       workflowBootstrapSteps: [
         setupNodeStep,
-        ...[options.parallelWorkflows ? undefined : turboCacheStep],
       ],
     })
-
-    this.turboCacheJobStep = turboCacheStep
 
     // Because we do not know the value of `this.package.lockFile` before super, we cannot
     // add the cache key which uses the lockfile name, we add it later
@@ -368,7 +354,14 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           name: 'Checkout',
           uses: 'actions/checkout@v2',
         },
-        this.turboCacheJobStep,
+        {
+          name: 'Setup turbo cache',
+          uses: 'felixmosh/turborepo-gh-artifacts@v1',
+          with: {
+            'repo-token': exp('secrets.GITHUB_TOKEN'),
+            'server-token': TURBO_CACHE_SERVER_TOKEN,
+          },
+        },
         ...this.renderWorkflowSetup({ mutable: false }),
         {
           name: 'Build',

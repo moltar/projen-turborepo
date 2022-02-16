@@ -119,11 +119,6 @@ jobs:
         with:
           cache: yarn
           cache-dependency-path: \\"**/yarn.lock\\"
-      - name: Setup turbo cache
-        uses: felixmosh/turborepo-gh-artifacts@v1
-        with:
-          repo-token: \${{ secrets.GITHUB_TOKEN }}
-          server-token: \${{ github.sha }}
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: build
@@ -176,11 +171,6 @@ jobs:
         with:
           cache: yarn
           cache-dependency-path: \\"**/yarn.lock\\"
-      - name: Setup turbo cache
-        uses: felixmosh/turborepo-gh-artifacts@v1
-        with:
-          repo-token: \${{ secrets.GITHUB_TOKEN }}
-          server-token: \${{ github.sha }}
       - name: Install dependencies
         run: yarn install --check-files --frozen-lockfile
       - name: Build
