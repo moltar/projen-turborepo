@@ -379,7 +379,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             },
           },
         }
-        : {},
+        : undefined,
     })
 
     for (const subProject of subProjects) {
