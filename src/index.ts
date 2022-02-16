@@ -1,7 +1,7 @@
 import * as path from 'path'
 import { toJestConfig } from 'dotalias/lib/converters/toJestConfig'
 import { typescript, Project, javascript, JsonFile, Task } from 'projen'
-import { JobPermission, JobStep } from 'projen/lib/github/workflows-model'
+import { JobPermission } from 'projen/lib/github/workflows-model'
 
 export interface TurborepoPipelineConfig {
   /**
@@ -156,33 +156,12 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly parallelWorkflows: boolean
 
   constructor(options: TurborepoProjectOptions) {
-    // Matches internal job step
-    // https://github.com/projen/projen/blob/98b1abc07335bbad3384484591344e6f7dffc70c/src/javascript/node-project.ts#L860-L862
-    const setupNodeStep: JobStep = {
-      name: 'Setup Node.js',
-      uses: 'actions/setup-node@v2',
-      with: {},
-    }
-
     super({
       ...options,
       jest: false,
       sampleCode: false,
       package: false,
-      workflowBootstrapSteps: [
-        setupNodeStep,
-      ],
     })
-
-    // Because we do not know the value of `this.package.lockFile` before super, we cannot
-    // add the cache key which uses the lockfile name, we add it later
-    if (setupNodeStep && setupNodeStep.with) {
-      Object.assign(setupNodeStep.with, {
-        // https://github.com/actions/setup-node#caching-packages-dependencies
-        'cache': this.package.packageManager,
-        'cache-dependency-path': `**/${this.package.lockFile}`,
-      })
-    }
 
     this.pathMapping = options.pathMapping ?? false
     this.projectReferences = options.projectReferences ?? false
