@@ -20,16 +20,12 @@ Object {
     },
   ],
   "settings": Object {
-    "eslint": Object {
-      "workingDirectories": Array [
-        "./packages/baz",
-      ],
-    },
-    "jest": Object {
-      "disabledWorkspaceFolders": Array [
-        "root",
-      ],
-    },
+    "eslint.workingDirectories": Array [
+      "./packages/baz",
+    ],
+    "jest.disabledWorkspaceFolders": Array [
+      "root",
+    ],
   },
 }
 `;

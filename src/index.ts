@@ -465,20 +465,17 @@ export class TurborepoProject extends typescript.TypeScriptProject {
       ]
 
       if (this.eslint) {
-        vscodeConfig.settings.eslint = {
-          workingDirectories: subProjects.map((subProject) => `./${path.relative(this.outdir, subProject.outdir)}`),
-        }
+        vscodeConfig.settings['eslint.workingDirectories'] = subProjects
+          .map((subProject) => `./${path.relative(this.outdir, subProject.outdir)}`)
       }
 
-      vscodeConfig.settings.jest = {
-        // disables Jest in root, and all projects that have jest off
-        disabledWorkspaceFolders: [
-          this.name,
-          ...subProjects
-            .filter((sp) => (sp instanceof javascript.NodeProject && !sp.jest)) // jest disabled
-            .map((sp) => sp.name),
-        ],
-      }
+      // disables Jest in root, and all projects that have jest off
+      vscodeConfig.settings['jest.disabledWorkspaceFolders'] = [
+        this.name,
+        ...subProjects
+          .filter((sp) => (sp instanceof javascript.NodeProject && !sp.jest)) // jest disabled
+          .map((sp) => sp.name),
+      ]
 
       // Adds VS Code settings for ESLint to recognize sub-projects
       // https://github.com/Microsoft/vscode-eslint#settings-options
