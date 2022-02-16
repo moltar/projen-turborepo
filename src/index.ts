@@ -479,7 +479,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
 
       // Adds VS Code settings for ESLint to recognize sub-projects
       // https://github.com/Microsoft/vscode-eslint#settings-options
-      new JsonFile(this, `.vscode/${this.name}.code-workspace`, {
+      new JsonFile(this, `${this.name}.code-workspace`, {
         obj: vscodeConfig,
       })
     }

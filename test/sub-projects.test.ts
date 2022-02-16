@@ -63,7 +63,7 @@ describe('TurborepoProject', () => {
 
     const synth = synthProjectSnapshot(project)
 
-    expect(JSON.parse(synth[`.vscode/${project.name}.code-workspace`])).toMatchSnapshot()
+    expect(JSON.parse(synth[`${project.name}.code-workspace`])).toMatchSnapshot()
   })
 
 
