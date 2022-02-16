@@ -39,6 +39,7 @@ const turbo = new TurborepoProject({
   jestModuleNameMapper: true,
   projectReferences: true,
   parallelWorkflows: true,
+  vscodeMultiRootWorkspaces: true,
 })
 
 new typescript.TypeScriptProject({

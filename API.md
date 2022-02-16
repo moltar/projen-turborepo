@@ -265,6 +265,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`pathMapping`](#projenturborepoturborepoprojectoptionspropertypathmapping) | `boolean` | Add TypeScript path maps in the root project for sub-projects. |
 | [`projectReferences`](#projenturborepoturborepoprojectoptionspropertyprojectreferences) | `boolean` | Adds TypeScript project references for each sub-project that depends on other sub-project. |
 | [`turbo`](#projenturborepoturborepoprojectoptionspropertyturbo) | [`projen-turborepo.TurborepoConfig`](#projen-turborepo.TurborepoConfig) | Turborepo config options. |
+| [`vscodeMultiRootWorkspaces`](#projenturborepoturborepoprojectoptionspropertyvscodemultirootworkspaces) | `boolean` | VS Code Multi-root Workspaces. |
 
 ---
 
@@ -2085,6 +2086,23 @@ public readonly turbo: TurborepoConfig;
 - *Default:* {}
 
 Turborepo config options.
+
+---
+
+##### `vscodeMultiRootWorkspaces`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.vscodeMultiRootWorkspaces" id="projenturborepoturborepoprojectoptionspropertyvscodemultirootworkspaces"></a>
+
+```typescript
+public readonly vscodeMultiRootWorkspaces: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+VS Code Multi-root Workspaces.
+
+Adds support for VS Code multi-root workspaces.
+
+> https://code.visualstudio.com/docs/editor/multi-root-workspaces
 
 ---
 

@@ -46,20 +46,24 @@ describe('TurborepoProject', () => {
     })
   })
 
-  it('should add VS Code settings for ESLint', () => {
+  it('should add VS Code settings', () => {
     expect.assertions(1)
 
-    const project = createProject()
+    const project = createProject({
+      name: 'root',
+      vscodeMultiRootWorkspaces: true,
+    })
 
     const subProjectDir = 'packages/baz'
     createSubProject({
+      name: 'sub',
       parent: project,
       outdir: subProjectDir,
     })
 
     const synth = synthProjectSnapshot(project)
 
-    expect(synth['.vscode/settings.json'].eslint).toBeDefined()
+    expect(JSON.parse(synth[`.vscode/${project.name}.code-workspace`])).toMatchSnapshot()
   })
 
 

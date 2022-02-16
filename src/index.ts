@@ -135,6 +135,19 @@ export interface TurborepoProjectOptions extends typescript.TypeScriptProjectOpt
    * @experimental
    */
   readonly parallelWorkflows?: boolean;
+
+  /**
+   * VS Code Multi-root Workspaces
+   *
+   * Adds support for VS Code multi-root workspaces.
+   *
+   * @see https://code.visualstudio.com/docs/editor/multi-root-workspaces
+   *
+   * @default false
+   *
+   * @experimental
+   */
+  readonly vscodeMultiRootWorkspaces?: boolean;
 }
 
 const exp = (val: string) => ['${{', val, '}}'].join(' ')
@@ -154,6 +167,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   private readonly projectReferences: boolean
   private readonly jestModuleNameMapper: boolean
   private readonly parallelWorkflows: boolean
+  private readonly vscodeMultiRootWorkspaces: boolean
 
   constructor(options: TurborepoProjectOptions) {
     super({
@@ -167,6 +181,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
     this.projectReferences = options.projectReferences ?? false
     this.jestModuleNameMapper = options.jestModuleNameMapper ?? false
     this.parallelWorkflows = options.parallelWorkflows ?? false
+    this.vscodeMultiRootWorkspaces = options.vscodeMultiRootWorkspaces ?? false
 
     /**
      * Adds itself as a depdency, so that we have it in the consuming project, and
@@ -302,18 +317,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
 
     if (workspaces.length > 0) {
       this.package.addField('workspaces', workspaces)
-
-      // Adds VS Code settings for ESLint to recognize sub-projects
-      // https://github.com/Microsoft/vscode-eslint#settings-options
-      new JsonFile(this, '.vscode/settings.json', {
-        obj: {
-          eslint: {
-            workingDirectories: workspaces.map((workspace) => `./${workspace}`),
-          },
-        },
-      })
     }
-
 
     const turboBuildCommand = `npx turbo run build --api="${TURBO_CACHE_SERVER_API}" --token="${TURBO_CACHE_SERVER_TOKEN}" --team="${exp('github.repository_owner')}"`
     const matrixScopeKey = 'scope'
@@ -429,6 +433,58 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           })
         }
       }
+    }
+
+
+    if (this.vscodeMultiRootWorkspaces) {
+      const vscodeConfig: Record<string, any> = {
+        folders: [],
+        settings: {},
+        extensions: {
+          recommendations: [
+            // https://marketplace.visualstudio.com/items?itemName=folke.vscode-monorepo-workspace
+            'folke.vscode-monorepo-workspace',
+            // https://marketplace.visualstudio.com/items?itemName=q.typescript-mono-repo-import-helper
+            'q.typescript-mono-repo-import-helper',
+          ],
+        },
+      }
+
+      vscodeConfig.folders = [
+        // root project
+        {
+          name: this.name,
+          path: './',
+        },
+
+        // all sub-projects
+        ...subProjects.map((subProject) => ({
+          name: subProject.name,
+          path: path.relative(this.outdir, subProject.outdir),
+        })),
+      ]
+
+      if (this.eslint) {
+        vscodeConfig.settings.eslint = {
+          workingDirectories: subProjects.map((subProject) => `./${path.relative(this.outdir, subProject.outdir)}`),
+        }
+      }
+
+      vscodeConfig.settings.jest = {
+        // disables Jest in root, and all projects that have jest off
+        disabledWorkspaceFolders: [
+          this.name,
+          ...subProjects
+            .filter((sp) => (sp instanceof javascript.NodeProject && !sp.jest)) // jest disabled
+            .map((sp) => sp.name),
+        ],
+      }
+
+      // Adds VS Code settings for ESLint to recognize sub-projects
+      // https://github.com/Microsoft/vscode-eslint#settings-options
+      new JsonFile(this, `.vscode/${this.name}.code-workspace`, {
+        obj: vscodeConfig,
+      })
     }
   }
 }
