@@ -50,20 +50,20 @@ describe('TurborepoProject', () => {
     expect.assertions(1)
 
     const project = createProject({
-      name: 'root',
+      name: '@foo/root',
       vscodeMultiRootWorkspaces: true,
     })
 
     const subProjectDir = 'packages/baz'
     createSubProject({
-      name: 'sub',
+      name: '@foo/sub',
       parent: project,
       outdir: subProjectDir,
     })
 
     const synth = synthProjectSnapshot(project)
 
-    expect(JSON.parse(synth[`${project.name}.code-workspace`])).toMatchSnapshot()
+    expect(JSON.parse(synth['@foo-root.code-workspace'])).toMatchSnapshot()
   })
 
 

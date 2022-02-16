@@ -11,11 +11,11 @@ Object {
   },
   "folders": Array [
     Object {
-      "name": "root",
+      "name": "@foo/root",
       "path": "./",
     },
     Object {
-      "name": "sub",
+      "name": "@foo/sub",
       "path": "packages/baz",
     },
   ],
@@ -24,7 +24,7 @@ Object {
       "./packages/baz",
     ],
     "jest.disabledWorkspaceFolders": Array [
-      "root",
+      "@foo/root",
     ],
   },
 }
