@@ -219,7 +219,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           outputs,
         },
         test: {
-          dependsOn: ['^build'],
+          dependsOn: ['^compile'],
           outputs: ['coverage/**', 'test-reports/**'],
         },
         eslint: {
