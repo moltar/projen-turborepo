@@ -69,7 +69,7 @@ describe('TurborepoProject', () => {
           outputs: ['build/**', 'dist/**', 'lib/**', 'storybook-static/**'],
         },
         test: {
-          dependsOn: ['^build'],
+          dependsOn: ['^compile'],
           outputs: ['coverage/**', 'test-reports/**'],
         },
         eslint: {
