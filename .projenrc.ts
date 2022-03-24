@@ -33,7 +33,7 @@ const project = new cdk.JsiiProject({
     'projen@0.52.31',
     'yaml',
     '@types/yaml',
-    'turbo@latest',
+    'turbo@^1',
   ],
   releaseToNpm: true,
   depsUpgrade: false,

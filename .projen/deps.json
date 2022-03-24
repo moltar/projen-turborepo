@@ -85,7 +85,7 @@
     },
     {
       "name": "turbo",
-      "version": "latest",
+      "version": "^1",
       "type": "build"
     },
     {
