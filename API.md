@@ -139,6 +139,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`projenrcJson`](#projenturborepoturborepoprojectoptionspropertyprojenrcjson) | `boolean` | Generate (once) .projenrc.json (in JSON). Set to `false` in order to disable .projenrc.json generation. |
 | [`projenrcJsonOptions`](#projenturborepoturborepoprojectoptionspropertyprojenrcjsonoptions) | [`projen.ProjenrcOptions`](#projen.ProjenrcOptions) | Options for .projenrc.json. |
 | [`autoApproveOptions`](#projenturborepoturborepoprojectoptionspropertyautoapproveoptions) | [`projen.github.AutoApproveOptions`](#projen.github.AutoApproveOptions) | Enable and configure the 'auto approve' workflow. |
+| [`autoMerge`](#projenturborepoturborepoprojectoptionspropertyautomerge) | `boolean` | Enable automatic merging on GitHub. |
 | [`autoMergeOptions`](#projenturborepoturborepoprojectoptionspropertyautomergeoptions) | [`projen.github.AutoMergeOptions`](#projen.github.AutoMergeOptions) | Configure options for automatic merging on GitHub. |
 | [`clobber`](#projenturborepoturborepoprojectoptionspropertyclobber) | `boolean` | Add a `clobber` task which resets the repo to origin. |
 | [`devContainer`](#projenturborepoturborepoprojectoptionspropertydevcontainer) | `boolean` | Add a VSCode development environment (used for GitHub Codespaces). |
@@ -148,6 +149,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`mergify`](#projenturborepoturborepoprojectoptionspropertymergify) | `boolean` | Whether mergify should be enabled on this repository or not. |
 | [`mergifyOptions`](#projenturborepoturborepoprojectoptionspropertymergifyoptions) | [`projen.github.MergifyOptions`](#projen.github.MergifyOptions) | Options for mergify. |
 | [`projectType`](#projenturborepoturborepoprojectoptionspropertyprojecttype) | [`projen.ProjectType`](#projen.ProjectType) | Which type of project this is (library/app). |
+| [`projenCredentials`](#projenturborepoturborepoprojectoptionspropertyprojencredentials) | [`projen.github.GithubCredentials`](#projen.github.GithubCredentials) | Choose a method of providing GitHub API access for projen workflows. |
 | [`projenTokenSecret`](#projenturborepoturborepoprojectoptionspropertyprojentokensecret) | `string` | The name of a secret which includes a GitHub Personal Access Token to be used by projen workflows. |
 | [`readme`](#projenturborepoturborepoprojectoptionspropertyreadme) | [`projen.SampleReadmeProps`](#projen.SampleReadmeProps) | The README setup. |
 | [`stale`](#projenturborepoturborepoprojectoptionspropertystale) | `boolean` | Auto-close of stale issues and pull request. |
@@ -163,7 +165,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`bugsEmail`](#projenturborepoturborepoprojectoptionspropertybugsemail) | `string` | The email address to which issues should be reported. |
 | [`bugsUrl`](#projenturborepoturborepoprojectoptionspropertybugsurl) | `string` | The url to your project's issue tracker. |
 | [`bundledDeps`](#projenturborepoturborepoprojectoptionspropertybundleddeps) | `string`[] | List of dependencies to bundle into this module. |
-| [`codeArtifactOptions`](#projenturborepoturborepoprojectoptionspropertycodeartifactoptions) | [`projen.javascript.CodeArtifactOptions`](#projen.javascript.CodeArtifactOptions) | Options for publishing npm package to AWS CodeArtifact. |
+| [`codeArtifactOptions`](#projenturborepoturborepoprojectoptionspropertycodeartifactoptions) | [`projen.javascript.CodeArtifactOptions`](#projen.javascript.CodeArtifactOptions) | Options for npm packages using AWS CodeArtifact. |
 | [`deps`](#projenturborepoturborepoprojectoptionspropertydeps) | `string`[] | Runtime dependencies of this module. |
 | [`description`](#projenturborepoturborepoprojectoptionspropertydescription) | `string` | The description is just a string that helps people understand the purpose of the package. |
 | [`devDeps`](#projenturborepoturborepoprojectoptionspropertydevdeps) | `string`[] | Build dependencies for this module. |
@@ -184,6 +186,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`peerDeps`](#projenturborepoturborepoprojectoptionspropertypeerdeps) | `string`[] | Peer dependencies for this module. |
 | [`repository`](#projenturborepoturborepoprojectoptionspropertyrepository) | `string` | The repository is the location where the actual code for your package lives. |
 | [`repositoryDirectory`](#projenturborepoturborepoprojectoptionspropertyrepositorydirectory) | `string` | If the package.json for your package is not in the root directory (for example if it is part of a monorepo), you can specify the directory in which it lives. |
+| [`scopedPackagesOptions`](#projenturborepoturborepoprojectoptionspropertyscopedpackagesoptions) | [`projen.javascript.ScopedPackagesOptions`](#projen.javascript.ScopedPackagesOptions)[] | Options for privately hosted scoped packages. |
 | [`scripts`](#projenturborepoturborepoprojectoptionspropertyscripts) | {[ key: string ]: `string`} | npm scripts to include. |
 | [`stability`](#projenturborepoturborepoprojectoptionspropertystability) | `string` | Package's Stability. |
 | [`jsiiReleaseVersion`](#projenturborepoturborepoprojectoptionspropertyjsiireleaseversion) | `string` | Version requirement of `publib` which is used to publish modules to npm. |
@@ -207,7 +210,6 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`workflowRunsOn`](#projenturborepoturborepoprojectoptionspropertyworkflowrunson) | `string`[] | Github Runner selection labels. |
 | [`defaultReleaseBranch`](#projenturborepoturborepoprojectoptionspropertydefaultreleasebranch)<span title="Required">*</span> | `string` | The name of the main release branch. |
 | [`artifactsDirectory`](#projenturborepoturborepoprojectoptionspropertyartifactsdirectory) | `string` | A directory which will contain build artifacts. |
-| [`autoApproveProjenUpgrades`](#projenturborepoturborepoprojectoptionspropertyautoapproveprojenupgrades) | `boolean` | Automatically approve projen upgrade PRs, allowing them to be merged by mergify (if configued). |
 | [`autoApproveUpgrades`](#projenturborepoturborepoprojectoptionspropertyautoapproveupgrades) | `boolean` | Automatically approve deps upgrade PRs, allowing them to be merged by mergify (if configued). |
 | [`buildWorkflow`](#projenturborepoturborepoprojectoptionspropertybuildworkflow) | `boolean` | Define a GitHub workflow for building PRs. |
 | [`buildWorkflowTriggers`](#projenturborepoturborepoprojectoptionspropertybuildworkflowtriggers) | [`projen.github.workflows.Triggers`](#projen.github.workflows.Triggers) | Build workflow triggers. |
@@ -219,7 +221,7 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`dependabot`](#projenturborepoturborepoprojectoptionspropertydependabot) | `boolean` | Use dependabot to handle dependency upgrades. |
 | [`dependabotOptions`](#projenturborepoturborepoprojectoptionspropertydependabotoptions) | [`projen.github.DependabotOptions`](#projen.github.DependabotOptions) | Options for dependabot. |
 | [`depsUpgrade`](#projenturborepoturborepoprojectoptionspropertydepsupgrade) | `boolean` | Use github workflows to handle dependency upgrades. |
-| [`depsUpgradeOptions`](#projenturborepoturborepoprojectoptionspropertydepsupgradeoptions) | [`projen.javascript.UpgradeDependenciesOptions`](#projen.javascript.UpgradeDependenciesOptions) | Options for depsUpgrade. |
+| [`depsUpgradeOptions`](#projenturborepoturborepoprojectoptionspropertydepsupgradeoptions) | [`projen.javascript.UpgradeDependenciesOptions`](#projen.javascript.UpgradeDependenciesOptions) | Options for `UpgradeDependencies`. |
 | [`gitignore`](#projenturborepoturborepoprojectoptionspropertygitignore) | `string`[] | Additional entries to .gitignore. |
 | [`jest`](#projenturborepoturborepoprojectoptionspropertyjest) | `boolean` | Setup jest unit tests. |
 | [`jestOptions`](#projenturborepoturborepoprojectoptionspropertyjestoptions) | [`projen.javascript.JestOptions`](#projen.javascript.JestOptions) | Jest options. |
@@ -232,16 +234,13 @@ const turborepoProjectOptions: TurborepoProjectOptions = { ... }
 | [`projenDevDependency`](#projenturborepoturborepoprojectoptionspropertyprojendevdependency) | `boolean` | Indicates of "projen" should be installed as a devDependency. |
 | [`projenrcJs`](#projenturborepoturborepoprojectoptionspropertyprojenrcjs) | `boolean` | Generate (once) .projenrc.js (in JavaScript). Set to `false` in order to disable .projenrc.js generation. |
 | [`projenrcJsOptions`](#projenturborepoturborepoprojectoptionspropertyprojenrcjsoptions) | [`projen.javascript.ProjenrcOptions`](#projen.javascript.ProjenrcOptions) | Options for .projenrc.js. |
-| [`projenUpgradeAutoMerge`](#projenturborepoturborepoprojectoptionspropertyprojenupgradeautomerge) | `boolean` | Automatically approve projen upgrade PRs, allowing them to be merged by mergify (if configued). |
-| [`projenUpgradeSchedule`](#projenturborepoturborepoprojectoptionspropertyprojenupgradeschedule) | `string`[] | Customize the projenUpgrade schedule in cron expression. |
-| [`projenUpgradeSecret`](#projenturborepoturborepoprojectoptionspropertyprojenupgradesecret) | `string` | Periodically submits a pull request for projen upgrades (executes `yarn projen:upgrade`). |
 | [`projenVersion`](#projenturborepoturborepoprojectoptionspropertyprojenversion) | `string` | Version of projen to install. |
 | [`pullRequestTemplate`](#projenturborepoturborepoprojectoptionspropertypullrequesttemplate) | `boolean` | Include a GitHub pull request template. |
 | [`pullRequestTemplateContents`](#projenturborepoturborepoprojectoptionspropertypullrequesttemplatecontents) | `string`[] | The contents of the pull request template. |
 | [`release`](#projenturborepoturborepoprojectoptionspropertyrelease) | `boolean` | Add release management to this project. |
 | [`releaseToNpm`](#projenturborepoturborepoprojectoptionspropertyreleasetonpm) | `boolean` | Automatically release to npm when new versions are introduced. |
 | [`releaseWorkflow`](#projenturborepoturborepoprojectoptionspropertyreleaseworkflow) | `boolean` | DEPRECATED: renamed to `release`. |
-| [`workflowBootstrapSteps`](#projenturborepoturborepoprojectoptionspropertyworkflowbootstrapsteps) | `any`[] | Workflow steps to use in order to bootstrap this repo. |
+| [`workflowBootstrapSteps`](#projenturborepoturborepoprojectoptionspropertyworkflowbootstrapsteps) | [`projen.github.workflows.JobStep`](#projen.github.workflows.JobStep)[] | Workflow steps to use in order to bootstrap this repo. |
 | [`workflowGitIdentity`](#projenturborepoturborepoprojectoptionspropertyworkflowgitidentity) | [`projen.github.GitIdentity`](#projen.github.GitIdentity) | The git identity to use in workflows. |
 | [`workflowNodeVersion`](#projenturborepoturborepoprojectoptionspropertyworkflownodeversion) | `string` | The node version to use in GitHub workflows. |
 | [`disableTsconfig`](#projenturborepoturborepoprojectoptionspropertydisabletsconfig) | `boolean` | Do not generate a `tsconfig.json` file (used by jsii projects since tsconfig.json is generated by the jsii compiler). |
@@ -376,6 +375,21 @@ Enable and configure the 'auto approve' workflow.
 
 ---
 
+##### `autoMerge`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.autoMerge" id="projenturborepoturborepoprojectoptionspropertyautomerge"></a>
+
+```typescript
+public readonly autoMerge: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* true
+
+Enable automatic merging on GitHub.
+
+Has no effect if `github.mergify` is set to false.
+
+---
+
 ##### `autoMergeOptions`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.autoMergeOptions" id="projenturborepoturborepoprojectoptionspropertyautomergeoptions"></a>
 
 ```typescript
@@ -387,7 +401,7 @@ public readonly autoMergeOptions: AutoMergeOptions;
 
 Configure options for automatic merging on GitHub.
 
-Has no effect if `github.mergify` is set to false.
+Has no effect if `github.mergify` or `autoMerge` is set to false.
 
 ---
 
@@ -503,7 +517,22 @@ Which type of project this is (library/app).
 
 ---
 
-##### `projenTokenSecret`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.projenTokenSecret" id="projenturborepoturborepoprojectoptionspropertyprojentokensecret"></a>
+##### `projenCredentials`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.projenCredentials" id="projenturborepoturborepoprojectoptionspropertyprojencredentials"></a>
+
+```typescript
+public readonly projenCredentials: GithubCredentials;
+```
+
+- *Type:* [`projen.github.GithubCredentials`](#projen.github.GithubCredentials)
+- *Default:* use a personal access token named PROJEN_GITHUB_TOKEN
+
+Choose a method of providing GitHub API access for projen workflows.
+
+---
+
+##### ~~`projenTokenSecret`~~<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.projenTokenSecret" id="projenturborepoturborepoprojectoptionspropertyprojentokensecret"></a>
+
+- *Deprecated:* use `projenCredentials`
 
 ```typescript
 public readonly projenTokenSecret: string;
@@ -538,7 +567,7 @@ public readonly stale: boolean;
 ```
 
 - *Type:* `boolean`
-- *Default:* true
+- *Default:* false
 
 Auto-close of stale issues and pull request.
 
@@ -713,7 +742,9 @@ public readonly codeArtifactOptions: CodeArtifactOptions;
 - *Type:* [`projen.javascript.CodeArtifactOptions`](#projen.javascript.CodeArtifactOptions)
 - *Default:* undefined
 
-Options for publishing npm package to AWS CodeArtifact.
+Options for npm packages using AWS CodeArtifact.
+
+This is required if publishing packages to, or installing scoped packages from AWS CodeArtifact
 
 ---
 
@@ -987,6 +1018,19 @@ public readonly repositoryDirectory: string;
 - *Type:* `string`
 
 If the package.json for your package is not in the root directory (for example if it is part of a monorepo), you can specify the directory in which it lives.
+
+---
+
+##### `scopedPackagesOptions`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.scopedPackagesOptions" id="projenturborepoturborepoprojectoptionspropertyscopedpackagesoptions"></a>
+
+```typescript
+public readonly scopedPackagesOptions: ScopedPackagesOptions[];
+```
+
+- *Type:* [`projen.javascript.ScopedPackagesOptions`](#projen.javascript.ScopedPackagesOptions)[]
+- *Default:* fetch all scoped packages from the public npm registry
+
+Options for privately hosted scoped packages.
 
 ---
 
@@ -1307,21 +1351,6 @@ A directory which will contain build artifacts.
 
 ---
 
-##### `autoApproveProjenUpgrades`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.autoApproveProjenUpgrades" id="projenturborepoturborepoprojectoptionspropertyautoapproveprojenupgrades"></a>
-
-```typescript
-public readonly autoApproveProjenUpgrades: boolean;
-```
-
-- *Type:* `boolean`
-- *Default:* false
-
-Automatically approve projen upgrade PRs, allowing them to be merged by mergify (if configued).
-
-Throw if set to true but `autoApproveOptions` are not defined.
-
----
-
 ##### `autoApproveUpgrades`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.autoApproveUpgrades" id="projenturborepoturborepoprojectoptionspropertyautoapproveupgrades"></a>
 
 ```typescript
@@ -1479,7 +1508,7 @@ public readonly depsUpgradeOptions: UpgradeDependenciesOptions;
 - *Type:* [`projen.javascript.UpgradeDependenciesOptions`](#projen.javascript.UpgradeDependenciesOptions)
 - *Default:* default options
 
-Options for depsUpgrade.
+Options for `UpgradeDependencies`.
 
 ---
 
@@ -1641,53 +1670,6 @@ Options for .projenrc.js.
 
 ---
 
-##### ~~`projenUpgradeAutoMerge`~~<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.projenUpgradeAutoMerge" id="projenturborepoturborepoprojectoptionspropertyprojenupgradeautomerge"></a>
-
-- *Deprecated:* use `autoApproveProjenUpgrades`.
-
-```typescript
-public readonly projenUpgradeAutoMerge: boolean;
-```
-
-- *Type:* `boolean`
-- *Default:* false
-
-Automatically approve projen upgrade PRs, allowing them to be merged by mergify (if configued).
-
-Throw if set to true but `autoApproveOptions` are not defined.
-
----
-
-##### `projenUpgradeSchedule`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.projenUpgradeSchedule" id="projenturborepoturborepoprojectoptionspropertyprojenupgradeschedule"></a>
-
-```typescript
-public readonly projenUpgradeSchedule: string[];
-```
-
-- *Type:* `string`[]
-- *Default:* [ "0 6 * * *" ]
-
-Customize the projenUpgrade schedule in cron expression.
-
----
-
-##### ~~`projenUpgradeSecret`~~<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.projenUpgradeSecret" id="projenturborepoturborepoprojectoptionspropertyprojenupgradesecret"></a>
-
-- *Deprecated:* use `githubTokenSecret` instead.
-
-```typescript
-public readonly projenUpgradeSecret: string;
-```
-
-- *Type:* `string`
-- *Default:* no automatic projen upgrade pull requests
-
-Periodically submits a pull request for projen upgrades (executes `yarn projen:upgrade`).
-
-This setting is a GitHub secret name which contains a GitHub Access Token with `repo` and `workflow` permissions.  This token is used to submit the upgrade pull request, which will likely include workflow updates.  To create a personal access token see https://github.com/settings/tokens
-
----
-
 ##### `projenVersion`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.projenVersion" id="projenturborepoturborepoprojectoptionspropertyprojenversion"></a>
 
 ```typescript
@@ -1771,10 +1753,10 @@ DEPRECATED: renamed to `release`.
 ##### `workflowBootstrapSteps`<sup>Optional</sup> <a name="projen-turborepo.TurborepoProjectOptions.property.workflowBootstrapSteps" id="projenturborepoturborepoprojectoptionspropertyworkflowbootstrapsteps"></a>
 
 ```typescript
-public readonly workflowBootstrapSteps: any[];
+public readonly workflowBootstrapSteps: JobStep[];
 ```
 
-- *Type:* `any`[]
+- *Type:* [`projen.github.workflows.JobStep`](#projen.github.workflows.JobStep)[]
 - *Default:* "yarn install --frozen-lockfile && yarn projen"
 
 Workflow steps to use in order to bootstrap this repo.
