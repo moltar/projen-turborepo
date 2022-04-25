@@ -34,6 +34,7 @@ Object {
       "CHANGELOG": "dist/changelog.md",
       "OUTFILE": "package.json",
       "RELEASETAG": "dist/releasetag.txt",
+      "RELEASE_TAG_PREFIX": "",
     },
     "name": "bump",
     "steps": Array [
@@ -163,6 +164,7 @@ Object {
       "CHANGELOG": "dist/changelog.md",
       "OUTFILE": "package.json",
       "RELEASETAG": "dist/releasetag.txt",
+      "RELEASE_TAG_PREFIX": "",
     },
     "name": "unbump",
     "steps": Array [
@@ -179,61 +181,28 @@ Object {
     "name": "upgrade",
     "steps": Array [
       Object {
-        "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='projen'",
+        "exec": "yarn upgrade npm-check-updates",
       },
       Object {
-        "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='projen'",
+        "exec": "npm-check-updates --dep dev --upgrade --target=minor",
       },
       Object {
-        "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='projen'",
+        "exec": "npm-check-updates --dep optional --upgrade --target=minor",
       },
       Object {
-        "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='projen'",
+        "exec": "npm-check-updates --dep peer --upgrade --target=minor",
       },
       Object {
-        "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='projen'",
+        "exec": "npm-check-updates --dep prod --upgrade --target=minor",
       },
       Object {
-        "exec": "yarn install --check-files",
-      },
-      Object {
-        "exec": "yarn upgrade @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint json-schema npm-check-updates projen-turborepo standard-version turbo typescript",
-      },
-      Object {
-        "exec": "npx projen",
-      },
-      Object {
-        "spawn": "post-upgrade",
-      },
-    ],
-  },
-  "upgrade-projen": Object {
-    "description": "upgrade projen",
-    "env": Object {
-      "CI": "0",
-    },
-    "name": "upgrade-projen",
-    "steps": Array [
-      Object {
-        "exec": "npm-check-updates --dep dev --upgrade --target=minor --filter='projen'",
-      },
-      Object {
-        "exec": "npm-check-updates --dep optional --upgrade --target=minor --filter='projen'",
-      },
-      Object {
-        "exec": "npm-check-updates --dep peer --upgrade --target=minor --filter='projen'",
-      },
-      Object {
-        "exec": "npm-check-updates --dep prod --upgrade --target=minor --filter='projen'",
-      },
-      Object {
-        "exec": "npm-check-updates --dep bundle --upgrade --target=minor --filter='projen'",
+        "exec": "npm-check-updates --dep bundle --upgrade --target=minor",
       },
       Object {
         "exec": "yarn install --check-files",
       },
       Object {
-        "exec": "yarn upgrade projen",
+        "exec": "yarn upgrade",
       },
       Object {
         "exec": "npx projen",
