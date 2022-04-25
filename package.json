@@ -59,7 +59,7 @@
     "yaml": "^2.0.0-10"
   },
   "peerDependencies": {
-    "projen": "^0.52.31"
+    "projen": "^0.54.43"
   },
   "dependencies": {
     "dotalias": "^0.0.5"
