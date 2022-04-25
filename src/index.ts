@@ -379,12 +379,13 @@ export class TurborepoProject extends typescript.TypeScriptProject {
           .map(({ outdir }) => path.relative(subProject.outdir, outdir))
           .map((p) => ({ path: p }))
 
-        const pathMappings: Record<string, string[]> = {}
+        const pathMappings: Record<string, string> = {}
         for (const depProject of depProjects) {
-          if (depProject instanceof javascript.NodeProject) {
+          if (depProject instanceof typescript.TypeScriptProject) {
             pathMappings[depProject.package.packageName] = [
               path.relative(subProject.outdir, depProject.outdir),
-            ]
+              depProject.srcdir,
+            ].join('/')
           }
         }
 
@@ -393,7 +394,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
             tsconfig?.file.addOverride('compilerOptions.baseUrl', '.')
 
             for (const [packageName, packagePath] of Object.entries(pathMappings)) {
-              tsconfig?.file.addOverride(`compilerOptions.paths.${packageName}`, [`${packagePath}/src`])
+              tsconfig?.file.addOverride(`compilerOptions.paths.${packageName}`, [packagePath])
             }
           }
 
@@ -413,7 +414,7 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         if (this.jestModuleNameMapper && depProjects.length > 0 && subProject.jest) {
           const pathsToModuleNameMappings: Record<string, string> = {}
           for (const [moduleName, modulePath] of Object.entries(pathMappings)) {
-            pathsToModuleNameMappings[moduleName] = [modulePath, 'src'].join('/')
+            pathsToModuleNameMappings[moduleName] = modulePath
           }
 
           // TODO: Revisit and refactor

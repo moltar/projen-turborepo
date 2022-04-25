@@ -29,6 +29,7 @@ describe('TurborepoProject', () => {
     const subProjectBar = createSubProject({
       parent: project,
       outdir: subProjectBarDir,
+      srcdir: 'pages',
     })
 
     const subProjectBazDir = 'packages/baz'
@@ -42,7 +43,7 @@ describe('TurborepoProject', () => {
 
     expect(synth['packages/baz/tsconfig.json'].compilerOptions.baseUrl).toBe('.')
     expect(synth['packages/baz/tsconfig.json'].compilerOptions.paths).toStrictEqual({
-      [subProjectBar.package.packageName]: ['../bar/src'],
+      [subProjectBar.package.packageName]: ['../bar/pages'],
     })
   })
 
