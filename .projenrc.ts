@@ -30,7 +30,7 @@ const project = new cdk.JsiiProject({
     'projen',
   ],
   devDeps: [
-    'projen@0.52.31',
+    'projen@0.54.43',
     'yaml',
     '@types/yaml',
     'turbo@^1',
