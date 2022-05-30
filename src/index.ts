@@ -299,6 +299,8 @@ export class TurborepoProject extends typescript.TypeScriptProject {
   }
 
   preSynthesize() {
+    super.preSynthesize()
+
     const { subProjects } = this
 
     const workspaces: string[] = []
@@ -435,7 +437,6 @@ export class TurborepoProject extends typescript.TypeScriptProject {
         }
       }
     }
-
 
     if (this.vscodeMultiRootWorkspaces) {
       const vscodeConfig: Record<string, any> = {
