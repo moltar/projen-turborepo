@@ -187,4 +187,38 @@ describe('TurborepoProject', () => {
 
     expect(synth['.github/workflows/build.yml']).toMatchSnapshot()
   })
+
+  it('should not clobber basePath', () => {
+    const baseUrl = 'src'
+
+    const project = createProject({
+      pathMapping: true,
+    })
+
+    const subProjectBarDir = 'packages/bar'
+    const subProjectBar = createSubProject({
+      name: 'bar',
+      parent: project,
+      outdir: subProjectBarDir,
+      srcdir: 'pages',
+    })
+
+    const subProjectBazDir = 'packages/baz'
+    createSubProject({
+      name: 'baz',
+      parent: project,
+      outdir: subProjectBazDir,
+      deps: [subProjectBar.package.packageName],
+      tsconfig: {
+        compilerOptions: {
+          baseUrl,
+        },
+      },
+    })
+
+    const synth = synthProjectSnapshot(project)
+
+    expect(synth['packages/baz/tsconfig.json'].compilerOptions.baseUrl).toBe(baseUrl)
+    expect(synth['packages/baz/tsconfig.json'].compilerOptions.paths.bar).toStrictEqual(['../../bar/pages'])
+  })
 })

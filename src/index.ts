@@ -393,10 +393,17 @@ export class TurborepoProject extends typescript.TypeScriptProject {
 
         for (const tsconfig of [subProject.tsconfig, subProject.tsconfigDev]) {
           if (this.pathMapping) {
-            tsconfig?.file.addOverride('compilerOptions.baseUrl', '.')
+            const baseUrl = tsconfig?.compilerOptions.baseUrl || '.'
+            tsconfig?.file.addOverride('compilerOptions.baseUrl', baseUrl)
 
             for (const [packageName, packagePath] of Object.entries(pathMappings)) {
-              tsconfig?.file.addOverride(`compilerOptions.paths.${packageName}`, [packagePath])
+              if (baseUrl === '.') {
+                tsconfig?.file.addOverride(`compilerOptions.paths.${packageName}`, [packagePath])
+              } else {
+                // A terrible hack that accounts for manually set baseUrl (e.g. see Next project class)
+                const baseUrlPrefix = baseUrl.split('/').map(() => '../').join('')
+                tsconfig?.file.addOverride(`compilerOptions.paths.${packageName}`, [baseUrlPrefix + packagePath])
+              }
             }
           }
 
